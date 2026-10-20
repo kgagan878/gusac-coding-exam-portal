@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: gusac-coding-exam-api
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: PORT
+        value: 5000
+      - key: MONGO_URI
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JUDGE0_API_URL
+        value: https://ce.judge0.com
+      - key: JUDGE0_API_KEY
+        sync: false
+      - key: EXAM_DURATION_MINUTES
+        value: 40
