@@ -1,4 +1,4 @@
-﻿# GUSAC Online Coding Exam Portal 🚀
+# GUSAC Online Coding Exam Portal 🚀
 
 [![Tech Stack: MERN](https://img.shields.io/badge/Stack-React%20%7C%20Node%20%7C%20Express%20%7C%20MongoDB-blue.svg)](https://github.com)
 [![Language: Java](https://img.shields.io/badge/Exam%20Language-Java%20Only-orange.svg)](https://java.com)

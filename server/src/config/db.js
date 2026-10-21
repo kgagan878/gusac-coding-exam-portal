@@ -2,6 +2,34 @@ const mongoose = require('mongoose');
 
 let mongod = null;
 
+const fs = require('fs');
+const path = require('path');
+
+const getOptimalMongoDbPath = () => {
+  if (process.env.MONGO_TMP_DIR) {
+    if (!fs.existsSync(process.env.MONGO_TMP_DIR)) {
+      try {
+        fs.mkdirSync(process.env.MONGO_TMP_DIR, { recursive: true });
+      } catch (e) {}
+    }
+    return process.env.MONGO_TMP_DIR;
+  }
+
+  if (process.platform === 'win32' && fs.existsSync('D:\\')) {
+    const dPath = 'D:\\.gusac_mongodb_data';
+    if (!fs.existsSync(dPath)) {
+      try {
+        fs.mkdirSync(dPath, { recursive: true });
+      } catch (e) {}
+    }
+    if (fs.existsSync(dPath)) {
+      return dPath;
+    }
+  }
+
+  return undefined;
+};
+
 const connectDB = async () => {
   try {
     const mongoUri = process.env.MONGO_URI;
@@ -15,17 +43,23 @@ const connectDB = async () => {
       return;
     }
 
-    console.log('No MONGO_URI provided or using fallback. Initializing embedded MongoMemoryServer...');
+    console.log('No MONGO_URI provided. Initializing embedded MongoMemoryServer...');
     const { MongoMemoryServer } = require('mongodb-memory-server');
-    mongod = await MongoMemoryServer.create();
+    const optimalDbPath = getOptimalMongoDbPath();
+    const serverOptions = optimalDbPath ? { instance: { dbPath: optimalDbPath } } : {};
+
+    mongod = await MongoMemoryServer.create(serverOptions);
     const uri = mongod.getUri();
     await mongoose.connect(uri);
     console.log(`Embedded MongoDB Memory Server connected successfully at: ${uri}`);
   } catch (error) {
-    console.warn(`Primary MongoDB connection failed: ${error.message}. Falling back to embedded MongoMemoryServer...`);
+    console.warn(`Primary MongoDB connection failed: ${error.message}. Retrying embedded MongoMemoryServer with fallback...`);
     try {
       const { MongoMemoryServer } = require('mongodb-memory-server');
-      mongod = await MongoMemoryServer.create();
+      const optimalDbPath = getOptimalMongoDbPath();
+      const serverOptions = optimalDbPath ? { instance: { dbPath: optimalDbPath } } : {};
+
+      mongod = await MongoMemoryServer.create(serverOptions);
       const uri = mongod.getUri();
       await mongoose.connect(uri);
       console.log(`Fallback MongoMemoryServer connected successfully at: ${uri}`);
