@@ -79,6 +79,18 @@ const examAttemptSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    mcqScore: {
+      type: Number,
+      default: 0,
+    },
+    codingScore: {
+      type: Number,
+      default: 0,
+    },
+    maxScore: {
+      type: Number,
+      default: 150,
+    },
     correctCount: {
       type: Number,
       default: 0,

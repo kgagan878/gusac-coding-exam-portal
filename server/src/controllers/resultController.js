@@ -43,30 +43,39 @@ const getResultByUserId = async (req, res) => {
     const showExplanations = !!config.showExplanations;
 
     const questions = await Question.find({}).sort({ order: 1, createdAt: 1 });
-    const maxTotalScore = questions.length || 20;
+    const maxTotalScore = 150;
 
     const breakdown = questions.map((q, idx) => {
       const answer = attempt.answers.find(
         (a) => a.questionId.toString() === q._id.toString()
       );
 
+      const isMcq = q.section === 'A';
       const selectedOption = answer ? answer.selectedOption : null;
       const isCorrect = answer ? !!answer.isCorrect : false;
-      const isAnswered = selectedOption !== null && selectedOption !== undefined;
+      const isAnswered = isMcq
+        ? (selectedOption !== null && selectedOption !== undefined)
+        : (!!answer && (!!answer.code || (answer.passedTests !== undefined && answer.passedTests > 0)));
 
       return {
         questionNumber: idx + 1,
         questionId: q._id,
+        section: q.section || (idx < 10 ? 'A' : 'B'),
+        type: q.type || (idx < 10 ? 'mcq' : 'coding'),
         title: q.title,
-        topic: q.topic || 'Java Output Prediction',
+        topic: q.topic || (idx < 10 ? 'Java Output Prediction' : 'Java Coding Problem'),
         description: q.description,
         codeSnippet: q.codeSnippet,
         options: q.options,
         selectedOption,
         isAnswered,
         isCorrect,
-        score: isCorrect ? 1 : 0,
-        marks: q.marks || 1,
+        score: answer ? (answer.score || 0) : 0,
+        marks: q.marks || (idx < 10 ? 5 : 50),
+        passedTests: answer ? (answer.passedTests || 0) : 0,
+        totalTests: answer ? (answer.totalTests || 0) : (q.section === 'B' ? 5 : 0),
+        code: answer ? (answer.code || '') : '',
+        language: answer ? (answer.language || 'java') : 'java',
         // Only disclose correctOption and explanation if admin enabled showExplanations
         correctOption: showExplanations ? q.correctOption : null,
         explanation: showExplanations ? q.explanation : null,
@@ -80,10 +89,12 @@ const getResultByUserId = async (req, res) => {
         studentId: user.studentId,
       },
       attemptId: attempt._id,
-      totalScore: attempt.totalScore,
+      totalScore: attempt.totalScore || 0,
+      mcqScore: attempt.mcqScore || 0,
+      codingScore: attempt.codingScore || 0,
       maxTotalScore,
-      correctCount: attempt.correctCount !== undefined ? attempt.correctCount : attempt.totalScore,
-      incorrectCount: attempt.incorrectCount !== undefined ? attempt.incorrectCount : Math.max(0, maxTotalScore - attempt.totalScore),
+      correctCount: attempt.correctCount !== undefined ? attempt.correctCount : 0,
+      incorrectCount: attempt.incorrectCount !== undefined ? attempt.incorrectCount : 0,
       unansweredCount: attempt.unansweredCount || 0,
       timeTaken: attempt.timeTaken,
       startTime: attempt.startTime,
@@ -114,7 +125,9 @@ const getLeaderboard = async (req, res) => {
           name: att.userId.name,
           studentId: att.userId.studentId,
           score: att.totalScore || 0,
-          maxScore: 20,
+          mcqScore: att.mcqScore || 0,
+          codingScore: att.codingScore || 0,
+          maxScore: 150,
           timeTaken: att.timeTaken || '00:00',
           timeInSeconds: seconds,
           submittedAt: att.endTime || att.updatedAt,
@@ -140,7 +153,9 @@ const getLeaderboard = async (req, res) => {
       name: entry.name,
       studentId: entry.studentId ? entry.studentId.slice(0, 3) + '***' : '***',
       score: entry.score,
-      maxScore: 20,
+      mcqScore: entry.mcqScore,
+      codingScore: entry.codingScore,
+      maxScore: 150,
       time: entry.timeTaken,
       submittedAt: entry.submittedAt,
     }));

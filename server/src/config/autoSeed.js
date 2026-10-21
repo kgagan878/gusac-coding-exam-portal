@@ -9,14 +9,14 @@ const autoSeedIfEmpty = async () => {
   try {
     const questionCount = await Question.countDocuments({});
 
-    // If already seeded with 20 questions, verify settings and return
-    if (questionCount === 20) {
+    // If already seeded with 12 questions (10 MCQs + 2 Coding), verify settings and return
+    if (questionCount === 12) {
       await Setting.getConfig();
-      console.log(`Database is already populated with 20 Java exam questions.`);
+      console.log(`Database is already populated with 12 CODE VERSE with Java questions (150 Points).`);
       return;
     }
 
-    console.log(`🌱 Detected ${questionCount} questions. Re-seeding official 20-question Java exam...`);
+    console.log(`🌱 Detected ${questionCount} questions. Re-seeding official 12-question CODE VERSE exam (150 Points)...`);
     await Question.deleteMany({});
 
     // 1. Ensure Setting exists
@@ -42,19 +42,19 @@ const autoSeedIfEmpty = async () => {
       console.log('✅ Auto-seed: Admin account created (admin@gusac.org)');
     }
 
-    // 3. Insert 20 Java Questions
+    // 3. Insert 12 Java Questions
     const createdQuestions = await Question.insertMany(javaQuestions);
-    console.log(`✅ Auto-seed: ${createdQuestions.length} Java Questions seeded.`);
+    console.log(`✅ Auto-seed: ${createdQuestions.length} Questions seeded (10 MCQs + 2 Coding).`);
 
     // 4. Create Sample Leaderboard if empty
     const attemptCount = await ExamAttempt.countDocuments({});
     if (attemptCount === 0) {
       const participants = [
-        { name: 'Rahul Sharma', email: 'rahul.s@gitam.in', studentId: 'GITAM202401', score: 19, timeTaken: '18:21', correct: 19, incorrect: 1, unanswered: 0 },
-        { name: 'Ananya Verma', email: 'ananya.v@gitam.in', studentId: 'GITAM202402', score: 18, timeTaken: '21:14', correct: 18, incorrect: 2, unanswered: 0 },
-        { name: 'Kiran Kumar', email: 'kiran.k@gitam.in', studentId: 'GITAM202403', score: 16, timeTaken: '24:35', correct: 16, incorrect: 3, unanswered: 1 },
-        { name: 'Siddharth Rao', email: 'siddharth.r@gitam.in', studentId: 'GITAM202404', score: 15, timeTaken: '28:10', correct: 15, incorrect: 5, unanswered: 0 },
-        { name: 'Pooja Reddy', email: 'pooja.r@gitam.in', studentId: 'GITAM202405', score: 14, timeTaken: '31:45', correct: 14, incorrect: 4, unanswered: 2 },
+        { name: 'Rahul Sharma', email: 'rahul.s@gitam.in', studentId: 'GITAM202401', mcqScore: 50, codingScore: 90, totalScore: 140, timeTaken: '22:15', correct: 10, incorrect: 0, unanswered: 0 },
+        { name: 'Ananya Verma', email: 'ananya.v@gitam.in', studentId: 'GITAM202402', mcqScore: 45, codingScore: 80, totalScore: 125, timeTaken: '24:30', correct: 9, incorrect: 1, unanswered: 0 },
+        { name: 'Kiran Kumar', email: 'kiran.k@gitam.in', studentId: 'GITAM202403', mcqScore: 40, codingScore: 70, totalScore: 110, timeTaken: '27:45', correct: 8, incorrect: 2, unanswered: 0 },
+        { name: 'Siddharth Rao', email: 'siddharth.r@gitam.in', studentId: 'GITAM202404', mcqScore: 45, codingScore: 50, totalScore: 95, timeTaken: '31:20', correct: 9, incorrect: 1, unanswered: 0 },
+        { name: 'Pooja Reddy', email: 'pooja.r@gitam.in', studentId: 'GITAM202405', mcqScore: 35, codingScore: 40, totalScore: 75, timeTaken: '34:10', correct: 7, incorrect: 3, unanswered: 0 },
       ];
 
       for (const p of participants) {
@@ -73,17 +73,31 @@ const autoSeedIfEmpty = async () => {
         const endTime = new Date(startTime.getTime() + 25 * 60 * 1000);
 
         const answers = createdQuestions.map((q, idx) => {
-          const isCorrect = idx < p.score;
-          const selected = isCorrect ? q.correctOption : (q.correctOption === 'A' ? 'B' : 'A');
-          return {
-            questionId: q._id,
-            selectedOption: selected,
-            isMarkedForReview: idx % 5 === 0,
-            isCorrect,
-            score: isCorrect ? 1 : 0,
-            answeredAt: new Date(startTime.getTime() + (idx + 1) * 60 * 1000),
-            submittedAt: endTime,
-          };
+          if (q.section === 'A') {
+            const isCorrect = idx < p.correct;
+            return {
+              questionId: q._id,
+              selectedOption: isCorrect ? q.correctOption : (q.correctOption === 'A' ? 'B' : 'A'),
+              isMarkedForReview: false,
+              isCorrect,
+              score: isCorrect ? 5 : 0,
+              answeredAt: new Date(startTime.getTime() + (idx + 1) * 60 * 1000),
+              submittedAt: endTime,
+            };
+          } else {
+            const qScore = idx === 10 ? Math.round(p.codingScore / 2) : (p.codingScore - Math.round(p.codingScore / 2));
+            const passedTests = Math.round((qScore / 50) * 5);
+            return {
+              questionId: q._id,
+              code: q.starterCode?.java || '',
+              language: 'java',
+              score: qScore,
+              passedTests,
+              totalTests: 5,
+              answeredAt: new Date(startTime.getTime() + (idx + 1) * 60 * 1000),
+              submittedAt: endTime,
+            };
+          }
         });
 
         await ExamAttempt.create({
@@ -92,7 +106,10 @@ const autoSeedIfEmpty = async () => {
           endTime,
           duration: 40,
           status: 'completed',
-          totalScore: p.score,
+          mcqScore: p.mcqScore,
+          codingScore: p.codingScore,
+          totalScore: p.totalScore,
+          maxScore: 150,
           correctCount: p.correct,
           incorrectCount: p.incorrect,
           unansweredCount: p.unanswered,
@@ -100,10 +117,10 @@ const autoSeedIfEmpty = async () => {
           answers,
         });
       }
-      console.log('✅ Auto-seed: Initial leaderboard records seeded.');
+      console.log('✅ Auto-seed: Initial leaderboard records seeded (out of 150).');
     }
   } catch (error) {
-    console.error('Auto-seed error:', error);
+    console.error('Auto-seed check warning:', error.message);
   }
 };
 

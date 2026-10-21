@@ -125,7 +125,7 @@ const getExamStatus = async (req, res) => {
 const saveAnswer = async (req, res) => {
   try {
     const userId = req.user._id;
-    const { questionId, selectedOption, isMarkedForReview } = req.body;
+    const { questionId, selectedOption, isMarkedForReview, code, language } = req.body;
 
     if (!questionId) {
       return res.status(400).json({ message: 'questionId is required.' });
@@ -156,11 +156,19 @@ const saveAnswer = async (req, res) => {
       if (isMarkedForReview !== undefined) {
         attempt.answers[existingIdx].isMarkedForReview = isMarkedForReview;
       }
+      if (code !== undefined) {
+        attempt.answers[existingIdx].code = code;
+      }
+      if (language !== undefined) {
+        attempt.answers[existingIdx].language = language;
+      }
       attempt.answers[existingIdx].answeredAt = serverNow;
     } else {
       attempt.answers.push({
         questionId,
         selectedOption: selectedOption || null,
+        code: code || '',
+        language: language || 'java',
         isMarkedForReview: !!isMarkedForReview,
         answeredAt: serverNow,
       });
@@ -179,55 +187,77 @@ const saveAnswer = async (req, res) => {
   }
 };
 
-// Helper to grade and finalize an attempt
+// Helper to grade and finalize an attempt (150 Points Total)
 const finalizeAttempt = async (attempt, endTime, res = null) => {
   const diffSeconds = Math.max(1, Math.floor((endTime.getTime() - attempt.startTime.getTime()) / 1000));
   attempt.endTime = endTime;
   attempt.timeTaken = formatTime(diffSeconds);
   attempt.status = 'completed';
 
-  // Fetch all questions with correctOption
+  // Fetch all questions
   const questions = await Question.find({});
   const qMap = new Map();
   questions.forEach((q) => qMap.set(q._id.toString(), q));
 
   let correct = 0;
   let incorrect = 0;
+  let mcqScore = 0;
+  let codingScore = 0;
 
   // Grade each question answer
   attempt.answers.forEach((ans) => {
     const q = qMap.get(ans.questionId.toString());
     if (q) {
-      if (ans.selectedOption && ans.selectedOption.trim() === q.correctOption.trim()) {
-        ans.isCorrect = true;
-        ans.score = 1;
-        correct++;
-      } else if (ans.selectedOption) {
-        ans.isCorrect = false;
-        ans.score = 0;
-        incorrect++;
+      if (q.section === 'A') {
+        // Section A: MCQs (5 points each, max 50)
+        if (ans.selectedOption && ans.selectedOption.trim() === q.correctOption.trim()) {
+          ans.isCorrect = true;
+          ans.score = 5;
+          mcqScore += 5;
+          correct++;
+        } else if (ans.selectedOption) {
+          ans.isCorrect = false;
+          ans.score = 0;
+          incorrect++;
+        } else {
+          ans.isCorrect = false;
+          ans.score = 0;
+        }
       } else {
-        ans.isCorrect = false;
-        ans.score = 0;
+        // Section B: Coding questions (max 50 points each)
+        const qScore = typeof ans.score === 'number' ? Math.min(50, Math.max(0, ans.score)) : 0;
+        ans.score = qScore;
+        codingScore += qScore;
+        if (ans.passedTests > 0 && ans.passedTests === ans.totalTests) {
+          correct++;
+        } else if (ans.passedTests > 0) {
+          correct += 0.5; // partial credit representation
+        }
       }
     }
   });
 
-  const totalQuestions = questions.length || 20;
-  const unanswered = Math.max(0, totalQuestions - (correct + incorrect));
+  const totalQuestions = questions.length || 12;
+  const mcqQuestionsCount = questions.filter((q) => q.section === 'A').length || 10;
+  const unanswered = Math.max(0, mcqQuestionsCount - (Math.floor(correct) + incorrect));
 
-  attempt.correctCount = correct;
+  attempt.mcqScore = Math.min(50, mcqScore);
+  attempt.codingScore = Math.min(100, codingScore);
+  attempt.totalScore = attempt.mcqScore + attempt.codingScore;
+  attempt.maxScore = 150;
+  attempt.correctCount = Math.floor(correct);
   attempt.incorrectCount = incorrect;
   attempt.unansweredCount = unanswered;
-  attempt.totalScore = correct; // 1 mark per correct answer
 
   await attempt.save();
 
   const responsePayload = {
-    message: 'Exam submitted and evaluated successfully.',
+    message: 'Event submission evaluated successfully.',
     attemptId: attempt._id,
     totalScore: attempt.totalScore,
-    maxScore: totalQuestions,
+    mcqScore: attempt.mcqScore,
+    codingScore: attempt.codingScore,
+    maxScore: 150,
     correctCount: attempt.correctCount,
     incorrectCount: attempt.incorrectCount,
     unansweredCount: attempt.unansweredCount,

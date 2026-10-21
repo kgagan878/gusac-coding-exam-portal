@@ -43,10 +43,26 @@ const connectDB = async () => {
       return;
     }
 
-    console.log('No MONGO_URI provided. Initializing embedded MongoMemoryServer...');
+    // Check if local MongoDB service is running on 27017
+    try {
+      console.log('Checking for local MongoDB service on port 27017...');
+      await mongoose.connect('mongodb://127.0.0.1:27017/gusac_exam', {
+        serverSelectionTimeoutMS: 2000,
+      });
+      console.log('✅ Connected to local MongoDB instance on port 27017 (gusac_exam).');
+      return;
+    } catch (localErr) {
+      console.log('Local MongoDB port 27017 not available. Falling back to MongoMemoryServer...');
+    }
+
+    console.log('Initializing embedded MongoMemoryServer...');
     const { MongoMemoryServer } = require('mongodb-memory-server');
     const optimalDbPath = getOptimalMongoDbPath();
-    const serverOptions = optimalDbPath ? { instance: { dbPath: optimalDbPath } } : {};
+    const uniquePath = optimalDbPath ? path.join(optimalDbPath, `inst_${process.pid}`) : undefined;
+    if (uniquePath && !fs.existsSync(uniquePath)) {
+      try { fs.mkdirSync(uniquePath, { recursive: true }); } catch (e) {}
+    }
+    const serverOptions = uniquePath ? { instance: { dbPath: uniquePath } } : {};
 
     mongod = await MongoMemoryServer.create(serverOptions);
     const uri = mongod.getUri();
@@ -56,10 +72,7 @@ const connectDB = async () => {
     console.warn(`Primary MongoDB connection failed: ${error.message}. Retrying embedded MongoMemoryServer with fallback...`);
     try {
       const { MongoMemoryServer } = require('mongodb-memory-server');
-      const optimalDbPath = getOptimalMongoDbPath();
-      const serverOptions = optimalDbPath ? { instance: { dbPath: optimalDbPath } } : {};
-
-      mongod = await MongoMemoryServer.create(serverOptions);
+      mongod = await MongoMemoryServer.create();
       const uri = mongod.getUri();
       await mongoose.connect(uri);
       console.log(`Fallback MongoMemoryServer connected successfully at: ${uri}`);

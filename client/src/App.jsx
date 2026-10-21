@@ -10,6 +10,7 @@ import Result from './pages/Result';
 import Leaderboard from './pages/Leaderboard';
 import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
+import Rules from './pages/Rules';
 
 function App() {
   return (
@@ -17,6 +18,10 @@ function App() {
       <AuthProvider>
         <ExamProvider>
           <Routes>
+            {/* Public Event Rules & Guidelines */}
+            <Route path="/rules" element={<Rules />} />
+            <Route path="/guidelines" element={<Rules />} />
+
             {/* Student Flow */}
             <Route path="/" element={<Navigate to="/exam" replace />} />
             <Route path="/exam" element={<Login />} />

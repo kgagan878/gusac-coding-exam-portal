@@ -41,6 +41,16 @@ const questionSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    section: {
+      type: String,
+      enum: ['A', 'B'],
+      default: 'A', // 'A' for MCQs, 'B' for Coding
+    },
+    type: {
+      type: String,
+      enum: ['mcq', 'coding'],
+      default: 'mcq',
+    },
     topic: {
       type: String,
       default: 'Java Output Prediction',

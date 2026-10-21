@@ -37,7 +37,7 @@ const getDashboardStats = async (req, res) => {
       inProgress: inProgressAttempts,
       notStarted: Math.max(0, totalStudents - (completedAttempts + inProgressAttempts)),
       averageScore,
-      maxScore: totalQuestions || 20,
+      maxScore: 150,
       totalQuestions,
       settings: {
         durationMinutes: config.durationMinutes,
@@ -80,8 +80,10 @@ const getParticipants = async (req, res) => {
         email: st.email,
         studentId: st.studentId,
         status: att ? att.status : 'not-started',
-        score: att ? att.totalScore : 0,
-        maxScore: 20,
+        score: att ? (att.totalScore || 0) : 0,
+        mcqScore: att ? (att.mcqScore || 0) : 0,
+        codingScore: att ? (att.codingScore || 0) : 0,
+        maxScore: 150,
         correctCount: att ? att.correctCount : 0,
         incorrectCount: att ? att.incorrectCount : 0,
         unansweredCount: att ? att.unansweredCount : 0,
@@ -243,9 +245,11 @@ const exportResultsCSV = async (req, res) => {
           email: att.userId.email,
           studentId: att.userId.studentId,
           score: att.totalScore || 0,
-          maxScore: 20,
-          correct: att.correctCount !== undefined ? att.correctCount : att.totalScore,
-          incorrect: att.incorrectCount !== undefined ? att.incorrectCount : Math.max(0, 20 - att.totalScore),
+          mcqScore: att.mcqScore || 0,
+          codingScore: att.codingScore || 0,
+          maxScore: 150,
+          correct: att.correctCount !== undefined ? att.correctCount : 0,
+          incorrect: att.incorrectCount !== undefined ? att.incorrectCount : 0,
           unanswered: att.unansweredCount || 0,
           timeTaken: att.timeTaken || '00:00',
           timeInSeconds: seconds,
@@ -269,8 +273,10 @@ const exportResultsCSV = async (req, res) => {
       'Email',
       'StudentID',
       'Status',
-      'Score',
+      'TotalScore',
       'MaxScore',
+      'SectionA_MCQScore',
+      'SectionB_CodingScore',
       'CorrectAnswers',
       'IncorrectAnswers',
       'Unanswered',
@@ -295,6 +301,8 @@ const exportResultsCSV = async (req, res) => {
       escapeCsv(entry.status),
       entry.score,
       entry.maxScore,
+      entry.mcqScore,
+      entry.codingScore,
       entry.correct,
       entry.incorrect,
       entry.unanswered,
@@ -306,7 +314,7 @@ const exportResultsCSV = async (req, res) => {
     const csvContent = [headers.join(','), ...rows.map((r) => r.join(','))].join('\r\n');
 
     res.setHeader('Content-Type', 'text/csv');
-    res.setHeader('Content-Disposition', 'attachment; filename="gusac_exam_results.csv"');
+    res.setHeader('Content-Disposition', 'attachment; filename="codeverse_java_results.csv"');
     return res.status(200).send(csvContent);
   } catch (error) {
     console.error('Export CSV error:', error);

@@ -99,8 +99,8 @@ const submitAnswer = async (req, res) => {
     const passedCount = testResults.filter((r) => r.passed).length;
     const totalCount = allEvaluationCases.length;
 
-    // Backend calculated score (proportional to passed tests)
-    const questionMaxMarks = question.marks || 20;
+    // Backend calculated score (proportional to passed tests, max 50 points per coding question)
+    const questionMaxMarks = question.marks || 50;
     const calculatedScore = Math.round((passedCount / totalCount) * questionMaxMarks);
 
     // Calculate total execution time across test cases
@@ -148,13 +148,29 @@ const submitAnswer = async (req, res) => {
     };
 
     if (existingAnswerIdx > -1) {
-      attempt.answers[existingAnswerIdx] = answerData;
+      attempt.answers[existingAnswerIdx] = {
+        ...attempt.answers[existingAnswerIdx].toObject(),
+        ...answerData,
+      };
     } else {
       attempt.answers.push(answerData);
     }
 
-    // Recalculate total exam score so far
-    attempt.totalScore = attempt.answers.reduce((sum, a) => sum + (a.score || 0), 0);
+    // Recalculate codingScore and totalScore so far
+    let totalCoding = 0;
+    let totalMcq = 0;
+    attempt.answers.forEach((ans) => {
+      if (ans.selectedOption !== undefined && ans.selectedOption !== null) {
+        totalMcq += (ans.score || 0);
+      } else {
+        totalCoding += (ans.score || 0);
+      }
+    });
+
+    attempt.mcqScore = Math.min(50, totalMcq);
+    attempt.codingScore = Math.min(100, totalCoding);
+    attempt.totalScore = attempt.mcqScore + attempt.codingScore;
+    attempt.maxScore = 150;
     await attempt.save();
 
     // Respond WITHOUT exposing hidden test inputs or expected outputs!
