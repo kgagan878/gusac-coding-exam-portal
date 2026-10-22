@@ -41,72 +41,72 @@ const SubmitModal = ({ isOpen, onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-150">
-      <div className="bg-[#111827] border border-slate-700 w-full max-w-md rounded-2xl shadow-2xl overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm animate-in fade-in duration-150">
+      <div className="bg-white border border-slate-200 w-full max-w-md rounded-2xl shadow-2xl overflow-hidden">
         {/* Header */}
-        <div className="px-6 pt-6 pb-4 flex items-center gap-3 border-b border-slate-800">
-          <div className="w-10 h-10 rounded-full bg-amber-500/20 border border-amber-500/40 flex items-center justify-center shrink-0">
-            <AlertTriangle className="w-5 h-5 text-amber-400" />
+        <div className="px-6 pt-6 pb-4 flex items-center gap-3 border-b border-slate-200 bg-slate-50">
+          <div className="w-10 h-10 rounded-full bg-amber-100 border border-amber-300 flex items-center justify-center shrink-0">
+            <AlertTriangle className="w-5 h-5 text-amber-600" />
           </div>
           <div>
-            <h3 className="text-lg font-bold text-white">Final Event Submission</h3>
-            <p className="text-xs text-slate-400">Review your attempt summary before final submission</p>
+            <h3 className="text-lg font-bold text-slate-900">Final Event Submission</h3>
+            <p className="text-xs text-slate-500">Review your attempt summary before final submission</p>
           </div>
         </div>
 
         {/* Content */}
         <div className="p-6 space-y-4">
-          <p className="text-xs text-slate-300 leading-relaxed">
+          <p className="text-xs text-slate-600 leading-relaxed">
             Are you sure you want to finalize your event submission? Once submitted, your MCQ answers and Java code solutions will be locked, your score will be calculated out of <strong>150 points</strong> (Section A: 100 pts, Section B: 50 pts), and your completion time will be officially recorded on the leaderboard.
           </p>
 
           {/* Answered / Review / Unanswered Stats Grid */}
-          <div className="grid grid-cols-3 gap-2.5 p-3.5 bg-slate-900/90 rounded-xl border border-slate-800 text-center">
-            <div className="p-2 rounded-lg bg-emerald-950/40 border border-emerald-800/40">
-              <CheckCircle className="w-4 h-4 text-emerald-400 mx-auto mb-1" />
-              <span className="text-[10px] text-slate-400 font-medium block">Answered</span>
-              <span className="text-base font-extrabold text-emerald-400">
+          <div className="grid grid-cols-3 gap-2.5 p-3.5 bg-slate-50 rounded-xl border border-slate-200 text-center">
+            <div className="p-2 rounded-lg bg-emerald-50 border border-emerald-200">
+              <CheckCircle className="w-4 h-4 text-emerald-600 mx-auto mb-1" />
+              <span className="text-[10px] text-slate-500 font-medium block">Answered</span>
+              <span className="text-base font-extrabold text-emerald-700">
                 {answeredCount} / {totalQuestions}
               </span>
             </div>
 
-            <div className="p-2 rounded-lg bg-amber-950/40 border border-amber-800/40">
-              <Bookmark className="w-4 h-4 text-amber-400 mx-auto mb-1" />
-              <span className="text-[10px] text-slate-400 font-medium block">In Review</span>
-              <span className="text-base font-extrabold text-amber-400">
+            <div className="p-2 rounded-lg bg-amber-50 border border-amber-200">
+              <Bookmark className="w-4 h-4 text-amber-600 mx-auto mb-1" />
+              <span className="text-[10px] text-slate-500 font-medium block">In Review</span>
+              <span className="text-base font-extrabold text-amber-700">
                 {reviewCount}
               </span>
             </div>
 
-            <div className="p-2 rounded-lg bg-slate-800/60 border border-slate-700/60">
-              <HelpCircle className="w-4 h-4 text-slate-400 mx-auto mb-1" />
-              <span className="text-[10px] text-slate-400 font-medium block">Unanswered</span>
-              <span className="text-base font-extrabold text-slate-300">
+            <div className="p-2 rounded-lg bg-slate-100 border border-slate-200">
+              <HelpCircle className="w-4 h-4 text-slate-500 mx-auto mb-1" />
+              <span className="text-[10px] text-slate-500 font-medium block">Unanswered</span>
+              <span className="text-base font-extrabold text-slate-700">
                 {unansweredCount}
               </span>
             </div>
           </div>
 
           {unansweredCount > 0 && (
-            <div className="text-[11px] text-amber-300/90 bg-amber-950/40 p-2.5 rounded-lg border border-amber-800/40">
+            <div className="text-[11px] text-amber-800 bg-amber-50 p-2.5 rounded-lg border border-amber-200">
               ⚠️ You have <strong>{unansweredCount} unattempted question(s)</strong>. Questions left unanswered will receive 0 marks.
             </div>
           )}
 
           {reviewCount > 0 && (
-            <div className="text-[11px] text-purple-300/90 bg-purple-950/40 p-2.5 rounded-lg border border-purple-800/40">
+            <div className="text-[11px] text-purple-800 bg-purple-50 p-2.5 rounded-lg border border-purple-200">
               ℹ️ You have <strong>{reviewCount} question(s) marked for review</strong>.
             </div>
           )}
         </div>
 
         {/* Actions */}
-        <div className="px-6 py-4 bg-slate-900/60 border-t border-slate-800 flex items-center justify-end gap-3">
+        <div className="px-6 py-4 bg-slate-50 border-t border-slate-200 flex items-center justify-end gap-3">
           <button
             type="button"
             onClick={onClose}
             disabled={isFinalSubmitting}
-            className="px-4 py-2 text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg transition-colors disabled:opacity-50 cursor-pointer"
+            className="px-4 py-2 text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-200/60 rounded-lg transition-colors disabled:opacity-50 cursor-pointer"
           >
             Cancel & Return to Event
           </button>
@@ -114,7 +114,7 @@ const SubmitModal = ({ isOpen, onClose }) => {
             type="button"
             onClick={handleConfirm}
             disabled={isFinalSubmitting}
-            className="flex items-center gap-2 px-5 py-2 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 rounded-lg shadow-lg shadow-emerald-950/50 transition-all disabled:opacity-50 cursor-pointer"
+            className="flex items-center gap-2 px-5 py-2 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 rounded-lg shadow-sm shadow-emerald-600/20 transition-all disabled:opacity-50 cursor-pointer"
           >
             {isFinalSubmitting ? (
               <>

@@ -45,19 +45,19 @@ const CodeEditor = () => {
   const submissionInfo = submittedAnswers[currentQuestion._id];
 
   return (
-    <div className="flex flex-col h-full bg-[#111827] border border-slate-800 rounded-xl overflow-hidden shadow-xl">
+    <div className="flex flex-col h-full bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
       {/* Editor Header Bar */}
-      <div className="flex flex-wrap items-center justify-between px-3 py-2 bg-[#0d131f] border-b border-slate-800 gap-2">
+      <div className="flex flex-wrap items-center justify-between px-3 py-2 bg-slate-50 border-b border-slate-200 gap-2">
         <div className="flex items-center gap-3">
           {/* Language Dropdown */}
           <div className="flex items-center gap-1.5">
-            <Code className="w-4 h-4 text-indigo-400" />
-            <span className="text-xs text-slate-400 font-medium">Language:</span>
+            <Code className="w-4 h-4 text-indigo-600" />
+            <span className="text-xs text-slate-600 font-medium">Language:</span>
             <select
               value={currentLang}
               onChange={(e) => changeLanguage(e.target.value)}
               disabled={isExamLocked}
-              className="bg-slate-800 text-slate-100 text-xs font-semibold rounded-md px-2.5 py-1.5 border border-slate-700 hover:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 cursor-pointer"
+              className="bg-white text-slate-800 text-xs font-semibold rounded-md px-2.5 py-1.5 border border-slate-300 hover:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 cursor-pointer shadow-xs"
             >
               {currentQuestion.supportedLanguages?.map((lang) => (
                 <option key={lang} value={lang}>
@@ -69,8 +69,8 @@ const CodeEditor = () => {
 
           {/* Submission status tag */}
           {isSubmitted && (
-            <div className="flex items-center gap-1 text-xs px-2 py-0.5 rounded bg-emerald-950/80 border border-emerald-600/50 text-emerald-300 font-medium">
-              <CheckCircle className="w-3.5 h-3.5 text-emerald-400" />
+            <div className="flex items-center gap-1 text-xs px-2 py-0.5 rounded bg-emerald-50 border border-emerald-300 text-emerald-800 font-medium">
+              <CheckCircle className="w-3.5 h-3.5 text-emerald-600" />
               <span>
                 Submitted: {submissionInfo.score}/{submissionInfo.maxMarks || currentQuestion.marks} pts ({submissionInfo.passedTests}/{submissionInfo.totalTests} tests)
               </span>
@@ -84,7 +84,7 @@ const CodeEditor = () => {
             onClick={resetCurrentCode}
             disabled={isExamLocked || isRunningCode || isSubmittingAnswer}
             title="Reset code to default template"
-            className="flex items-center gap-1 text-xs text-slate-400 hover:text-slate-200 px-2.5 py-1.5 rounded bg-slate-800/60 hover:bg-slate-800 border border-slate-700/60 transition-colors disabled:opacity-50"
+            className="flex items-center gap-1 text-xs text-slate-600 hover:text-slate-900 px-2.5 py-1.5 rounded bg-white hover:bg-slate-100 border border-slate-300 transition-colors disabled:opacity-50 cursor-pointer shadow-xs"
           >
             <RotateCcw className="w-3.5 h-3.5" />
             <span className="hidden sm:inline">Reset</span>
@@ -94,16 +94,16 @@ const CodeEditor = () => {
           <button
             onClick={() => runCode()}
             disabled={isExamLocked || isRunningCode || isSubmittingAnswer}
-            className="flex items-center gap-1.5 text-xs font-semibold bg-slate-800 hover:bg-slate-700 active:bg-slate-900 text-indigo-300 border border-indigo-700/50 hover:border-indigo-500 px-3.5 py-1.5 rounded-lg transition-all shadow-sm disabled:opacity-50"
+            className="flex items-center gap-1.5 text-xs font-semibold bg-white hover:bg-slate-100 active:bg-slate-200 text-indigo-700 border border-indigo-300 hover:border-indigo-500 px-3.5 py-1.5 rounded-lg transition-all shadow-xs disabled:opacity-50 cursor-pointer"
           >
             {isRunningCode ? (
               <>
-                <Loader2 className="w-3.5 h-3.5 animate-spin text-indigo-400" />
+                <Loader2 className="w-3.5 h-3.5 animate-spin text-indigo-600" />
                 <span>Running...</span>
               </>
             ) : (
               <>
-                <Play className="w-3.5 h-3.5 text-indigo-400 fill-indigo-400" />
+                <Play className="w-3.5 h-3.5 text-indigo-600 fill-indigo-600" />
                 <span>Run Code</span>
               </>
             )}
@@ -113,7 +113,7 @@ const CodeEditor = () => {
           <button
             onClick={() => submitAnswer()}
             disabled={isExamLocked || isRunningCode || isSubmittingAnswer}
-            className="flex items-center gap-1.5 text-xs font-semibold bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700 text-white px-4 py-1.5 rounded-lg transition-all shadow-md shadow-indigo-900/30 disabled:opacity-50"
+            className="flex items-center gap-1.5 text-xs font-semibold bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white px-4 py-1.5 rounded-lg transition-all shadow-sm shadow-indigo-600/20 disabled:opacity-50 cursor-pointer"
           >
             {isSubmittingAnswer ? (
               <>
@@ -137,7 +137,7 @@ const CodeEditor = () => {
           language={MONACO_LANG_MAP[currentLang] || 'python'}
           value={currentCode}
           onChange={(value) => updateCurrentCode(value || '')}
-          theme="vs-dark"
+          theme="vs"
           options={{
             fontSize: 14,
             fontFamily: "'JetBrains Mono', 'Fira Code', Menlo, Monaco, Consolas, monospace",

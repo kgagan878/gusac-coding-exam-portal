@@ -16,21 +16,21 @@ const CountdownTimer = () => {
     <div
       className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg font-mono font-bold text-sm tracking-wider border transition-all ${
         isCritical
-          ? 'bg-rose-950/70 border-rose-500 text-rose-300 animate-pulse'
+          ? 'bg-rose-50 border-rose-400 text-rose-700 animate-pulse'
           : isUrgent
-          ? 'bg-amber-950/60 border-amber-500/70 text-amber-300'
-          : 'bg-slate-900 border-slate-700 text-indigo-300 shadow-inner'
+          ? 'bg-amber-50 border-amber-300 text-amber-800'
+          : 'bg-slate-100 border-slate-200 text-slate-800 shadow-xs'
       }`}
     >
       {isCritical ? (
-        <AlertTriangle className="w-4 h-4 text-rose-400 animate-bounce" />
+        <AlertTriangle className="w-4 h-4 text-rose-600 animate-bounce" />
       ) : (
-        <Clock className={`w-4 h-4 ${isUrgent ? 'text-amber-400' : 'text-indigo-400'}`} />
+        <Clock className={`w-4 h-4 ${isUrgent ? 'text-amber-600' : 'text-indigo-600'}`} />
       )}
-      <span className="text-xs uppercase tracking-wider text-slate-400 font-sans font-semibold">
+      <span className="text-xs uppercase tracking-wider text-slate-500 font-sans font-semibold">
         TIME LEFT:
       </span>
-      <span className="text-base font-bold">{isExamLocked ? '00:00' : formattedTime}</span>
+      <span className="text-base font-bold text-indigo-700">{isExamLocked ? '00:00' : formattedTime}</span>
     </div>
   );
 };

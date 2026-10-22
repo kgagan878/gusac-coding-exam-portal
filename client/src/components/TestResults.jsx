@@ -14,17 +14,17 @@ const TestResults = () => {
   const selectedCase = results[selectedCaseIdx] || null;
 
   return (
-    <div className="flex flex-col h-full bg-[#111827] border border-slate-800 rounded-xl overflow-hidden shadow-xl text-slate-200">
+    <div className="flex flex-col h-full bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm text-slate-800">
       {/* Console Tab Header */}
-      <div className="flex items-center justify-between px-3 py-2 bg-[#0d131f] border-b border-slate-800">
+      <div className="flex items-center justify-between px-3 py-2 bg-slate-50 border-b border-slate-200">
         <div className="flex items-center gap-2">
-          <Terminal className="w-4 h-4 text-indigo-400" />
+          <Terminal className="w-4 h-4 text-indigo-600" />
           <button
             onClick={() => setActiveTab('cases')}
             className={`text-xs font-semibold px-2.5 py-1 rounded transition-colors ${
               activeTab === 'cases'
-                ? 'bg-slate-800 text-indigo-300 border border-indigo-700/40'
-                : 'text-slate-400 hover:text-slate-200'
+                ? 'bg-white text-indigo-700 border border-slate-300 shadow-xs'
+                : 'text-slate-500 hover:text-slate-800'
             }`}
           >
             Test Cases {results.length > 0 && `(${testResults?.passedTests}/${testResults?.totalTests} Passed)`}
@@ -33,8 +33,8 @@ const TestResults = () => {
             onClick={() => setActiveTab('custom')}
             className={`text-xs font-semibold px-2.5 py-1 rounded transition-colors ${
               activeTab === 'custom'
-                ? 'bg-slate-800 text-indigo-300 border border-indigo-700/40'
-                : 'text-slate-400 hover:text-slate-200'
+                ? 'bg-white text-indigo-700 border border-slate-300 shadow-xs'
+                : 'text-slate-500 hover:text-slate-800'
             }`}
           >
             Custom Test
@@ -45,13 +45,13 @@ const TestResults = () => {
         {testResults && results.length > 0 && activeTab === 'cases' && (
           <div className="flex items-center gap-3 text-xs">
             {testResults.allPassed ? (
-              <span className="flex items-center gap-1 text-emerald-400 font-semibold">
-                <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+              <span className="flex items-center gap-1 text-emerald-600 font-semibold">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600" />
                 All Public Tests Passed
               </span>
             ) : (
-              <span className="flex items-center gap-1 text-rose-400 font-semibold">
-                <XCircle className="w-4 h-4 text-rose-400" />
+              <span className="flex items-center gap-1 text-rose-600 font-semibold">
+                <XCircle className="w-4 h-4 text-rose-600" />
                 Some Tests Failed
               </span>
             )}
@@ -64,37 +64,37 @@ const TestResults = () => {
         {activeTab === 'cases' ? (
           <div>
             {!testResults ? (
-              <div className="flex flex-col items-center justify-center py-8 text-center text-slate-500">
-                <Terminal className="w-8 h-8 mb-2 opacity-50 text-indigo-400" />
-                <p className="text-xs font-medium">Click "Run Code" to execute public sample test cases.</p>
-                <p className="text-[11px] text-slate-600 mt-0.5">Your code will be evaluated safely on Judge0.</p>
+              <div className="flex flex-col items-center justify-center py-8 text-center text-slate-400">
+                <Terminal className="w-8 h-8 mb-2 opacity-40 text-indigo-600" />
+                <p className="text-xs font-medium text-slate-600">Click "Run Code" to execute public sample test cases.</p>
+                <p className="text-[11px] text-slate-400 mt-0.5">Your code will be evaluated safely on Judge0.</p>
               </div>
             ) : results.length === 0 ? (
-              <div className="text-xs text-rose-400 p-3 bg-rose-950/40 rounded border border-rose-800/40">
+              <div className="text-xs text-rose-700 p-3 bg-rose-50 rounded border border-rose-200">
                 No test results returned. Check compilation errors below.
               </div>
             ) : (
               <div className="flex flex-col gap-3">
                 {/* Case Selector Tabs */}
-                <div className="flex flex-wrap items-center gap-2 pb-2 border-b border-slate-800">
+                <div className="flex flex-wrap items-center gap-2 pb-2 border-b border-slate-200">
                   {results.map((r, i) => (
                     <button
                       key={i}
                       onClick={() => setSelectedCaseIdx(i)}
                       className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all ${
                         selectedCaseIdx === i
-                          ? 'bg-slate-800 border-indigo-500 text-white shadow'
-                          : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-slate-200'
+                          ? 'bg-indigo-50 border-indigo-400 text-indigo-900 shadow-xs'
+                          : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'
                       }`}
                     >
                       {r.passed ? (
-                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
                       ) : (
-                        <XCircle className="w-3.5 h-3.5 text-rose-400 shrink-0" />
+                        <XCircle className="w-3.5 h-3.5 text-rose-600 shrink-0" />
                       )}
                       <span>Test Case {r.testCaseNumber}</span>
-                      <span className={`text-[10px] ml-0.5 px-1 py-0.2 rounded ${
-                        r.passed ? 'bg-emerald-950 text-emerald-300' : 'bg-rose-950 text-rose-300'
+                      <span className={`text-[10px] ml-0.5 px-1 py-0.2 rounded font-bold ${
+                        r.passed ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'
                       }`}>
                         {r.status}
                       </span>
@@ -106,47 +106,47 @@ const TestResults = () => {
                 {selectedCase && (
                   <div className="space-y-2.5 text-xs">
                     {/* Execution metrics */}
-                    <div className="flex items-center gap-4 text-[11px] text-slate-400 bg-slate-900/90 px-3 py-1.5 rounded border border-slate-800">
+                    <div className="flex items-center gap-4 text-[11px] text-slate-600 bg-slate-50 px-3 py-1.5 rounded border border-slate-200">
                       <span className="flex items-center gap-1">
-                        <Clock className="w-3 h-3 text-indigo-400" />
+                        <Clock className="w-3 h-3 text-indigo-600" />
                         Time: {selectedCase.executionTime !== undefined ? `${selectedCase.executionTime}s` : '0s'}
                       </span>
                       <span className="flex items-center gap-1">
-                        <Cpu className="w-3 h-3 text-indigo-400" />
+                        <Cpu className="w-3 h-3 text-indigo-600" />
                         Memory: {selectedCase.memory ? `${selectedCase.memory} KB` : 'N/A'}
                       </span>
                     </div>
 
                     {/* Input */}
                     <div>
-                      <div className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-1">
+                      <div className="text-[11px] font-semibold uppercase tracking-wider text-slate-500 mb-1">
                         Input
                       </div>
-                      <pre className="bg-[#0a0f18] p-2.5 rounded-md font-mono border border-slate-800/80 overflow-x-auto text-slate-200 whitespace-pre-wrap">
+                      <pre className="bg-slate-50 p-2.5 rounded-md font-mono border border-slate-200 overflow-x-auto text-slate-800 whitespace-pre-wrap">
                         {selectedCase.input || '(empty)'}
                       </pre>
                     </div>
 
                     {/* Expected Output */}
                     <div>
-                      <div className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-1">
+                      <div className="text-[11px] font-semibold uppercase tracking-wider text-slate-500 mb-1">
                         Expected Output
                       </div>
-                      <pre className="bg-[#0a0f18] p-2.5 rounded-md font-mono border border-slate-800/80 overflow-x-auto text-emerald-300 whitespace-pre-wrap">
+                      <pre className="bg-emerald-50/50 p-2.5 rounded-md font-mono border border-emerald-200 overflow-x-auto text-emerald-900 whitespace-pre-wrap">
                         {selectedCase.expectedOutput}
                       </pre>
                     </div>
 
                     {/* Actual Output */}
                     <div>
-                      <div className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-1">
+                      <div className="text-[11px] font-semibold uppercase tracking-wider text-slate-500 mb-1">
                         Actual Output (stdout)
                       </div>
                       <pre
                         className={`p-2.5 rounded-md font-mono border overflow-x-auto whitespace-pre-wrap ${
                           selectedCase.passed
-                            ? 'bg-[#0a0f18] text-emerald-300 border-emerald-900/40'
-                            : 'bg-rose-950/20 text-rose-300 border-rose-900/50'
+                            ? 'bg-emerald-50/50 text-emerald-900 border-emerald-200'
+                            : 'bg-rose-50 text-rose-800 border-rose-200'
                         }`}
                       >
                         {selectedCase.actualOutput ? selectedCase.actualOutput : '(no output)'}
@@ -156,11 +156,11 @@ const TestResults = () => {
                     {/* Errors if any */}
                     {(selectedCase.stderr || selectedCase.compileOutput) && (
                       <div>
-                        <div className="text-[11px] font-semibold uppercase tracking-wider text-rose-400 mb-1 flex items-center gap-1">
+                        <div className="text-[11px] font-semibold uppercase tracking-wider text-rose-600 mb-1 flex items-center gap-1">
                           <AlertCircle className="w-3.5 h-3.5" />
                           <span>Errors / stderr</span>
                         </div>
-                        <pre className="bg-rose-950/40 text-rose-300 p-2.5 rounded-md font-mono border border-rose-800/60 overflow-x-auto whitespace-pre-wrap">
+                        <pre className="bg-rose-50 text-rose-800 p-2.5 rounded-md font-mono border border-rose-200 overflow-x-auto whitespace-pre-wrap">
                           {selectedCase.compileOutput || selectedCase.stderr}
                         </pre>
                       </div>
@@ -174,7 +174,7 @@ const TestResults = () => {
           /* Custom Test Tab */
           <div className="space-y-3">
             <div>
-              <label className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 block mb-1">
+              <label className="text-[11px] font-semibold uppercase tracking-wider text-slate-500 block mb-1">
                 Custom Standard Input (stdin)
               </label>
               <textarea
@@ -182,14 +182,14 @@ const TestResults = () => {
                 value={customInput}
                 onChange={(e) => setCustomInput(e.target.value)}
                 placeholder="Type custom input values to feed into your program..."
-                className="w-full bg-[#0a0f18] text-slate-200 border border-slate-700 rounded-lg p-2.5 text-xs font-mono focus:outline-none focus:border-indigo-500"
+                className="w-full bg-white text-slate-800 border border-slate-300 rounded-lg p-2.5 text-xs font-mono focus:outline-none focus:border-indigo-600"
               />
             </div>
 
             <button
               onClick={() => runCode(customInput)}
               disabled={isExamLocked || isRunningCode}
-              className="flex items-center gap-1.5 text-xs font-semibold bg-indigo-600 hover:bg-indigo-500 text-white px-3.5 py-1.5 rounded-lg transition-colors disabled:opacity-50"
+              className="flex items-center gap-1.5 text-xs font-semibold bg-indigo-600 hover:bg-indigo-700 text-white px-3.5 py-1.5 rounded-lg transition-colors disabled:opacity-50 cursor-pointer shadow-xs"
             >
               {isRunningCode ? (
                 <>
@@ -206,18 +206,18 @@ const TestResults = () => {
 
             {testResults?.isCustom && (
               <div className="mt-3 space-y-2 text-xs">
-                <div className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">
+                <div className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">
                   Custom Execution Output
                 </div>
-                <div className="flex items-center gap-3 text-[11px] text-slate-400">
-                  <span>Status: <strong className="text-slate-200">{testResults.result.status}</strong></span>
+                <div className="flex items-center gap-3 text-[11px] text-slate-500">
+                  <span>Status: <strong className="text-slate-800">{testResults.result.status}</strong></span>
                   <span>Time: <strong>{testResults.result.executionTime}s</strong></span>
                 </div>
-                <pre className="bg-[#0a0f18] p-2.5 rounded font-mono border border-slate-800 text-slate-200 whitespace-pre-wrap">
+                <pre className="bg-slate-50 p-2.5 rounded font-mono border border-slate-200 text-slate-800 whitespace-pre-wrap">
                   {testResults.result.stdout || '(no stdout)'}
                 </pre>
                 {testResults.result.stderr && (
-                  <pre className="bg-rose-950/30 p-2.5 rounded font-mono border border-rose-900/40 text-rose-300 whitespace-pre-wrap">
+                  <pre className="bg-rose-50 p-2.5 rounded font-mono border border-rose-200 text-rose-800 whitespace-pre-wrap">
                     {testResults.result.stderr}
                   </pre>
                 )}
