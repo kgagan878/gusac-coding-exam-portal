@@ -135,7 +135,7 @@ const Result = () => {
                 </div>
               </div>
 
-              {/* Section-Wise Score Breakdown (Section A: /50, Section B: /100) */}
+              {/* Section-Wise Score Breakdown (Section A: /100, Section B: /50) */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                 {/* Section A Card */}
                 <div className="p-4 bg-[#0c121e] border border-indigo-900/40 rounded-xl flex items-center justify-between">
@@ -143,11 +143,11 @@ const Result = () => {
                     <span className="text-[11px] font-bold uppercase tracking-wider text-indigo-300 block">
                       Section A: Java MCQs
                     </span>
-                    <span className="text-xs text-slate-400">10 Questions (5 pts each)</span>
+                    <span className="text-xs text-slate-400">20 Questions (5 pts each)</span>
                   </div>
                   <div className="text-right">
                     <span className="text-2xl font-black text-indigo-400">{mcqScore}</span>
-                    <span className="text-xs text-slate-500 font-semibold"> / 50 Pts</span>
+                    <span className="text-xs text-slate-500 font-semibold"> / 100 Pts</span>
                   </div>
                 </div>
 
@@ -157,11 +157,11 @@ const Result = () => {
                     <span className="text-[11px] font-bold uppercase tracking-wider text-purple-300 block">
                       Section B: Java Coding
                     </span>
-                    <span className="text-xs text-slate-400">2 Problems (50 pts each)</span>
+                    <span className="text-xs text-slate-400">2 Problems (25 pts each)</span>
                   </div>
                   <div className="text-right">
                     <span className="text-2xl font-black text-purple-400">{codingScore}</span>
-                    <span className="text-xs text-slate-500 font-semibold"> / 100 Pts</span>
+                    <span className="text-xs text-slate-500 font-semibold"> / 50 Pts</span>
                   </div>
                 </div>
               </div>
@@ -207,7 +207,7 @@ const Result = () => {
               <div className="space-y-3 mb-8">
                 <div className="flex items-center justify-between px-1">
                   <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400">
-                    Evaluation Breakdown ({resultData?.breakdown?.length || 12} Questions)
+                    Evaluation Breakdown ({resultData?.breakdown?.length || 22} Questions)
                   </h2>
                   <span className="text-xs text-slate-500 font-mono">Grand Total: 150 Points</span>
                 </div>

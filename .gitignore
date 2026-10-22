@@ -26,6 +26,7 @@ mongod.log
 dump/
 wt/
 wt.*
+*.zip
 
 # Logs
 npm-debug.log*

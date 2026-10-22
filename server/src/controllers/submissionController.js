@@ -99,8 +99,8 @@ const submitAnswer = async (req, res) => {
     const passedCount = testResults.filter((r) => r.passed).length;
     const totalCount = allEvaluationCases.length;
 
-    // Backend calculated score (proportional to passed tests, max 50 points per coding question)
-    const questionMaxMarks = question.marks || 50;
+    // Backend calculated score (proportional to passed tests, max 25 points per coding question)
+    const questionMaxMarks = question.marks || 25;
     const calculatedScore = Math.round((passedCount / totalCount) * questionMaxMarks);
 
     // Calculate total execution time across test cases
@@ -167,8 +167,8 @@ const submitAnswer = async (req, res) => {
       }
     });
 
-    attempt.mcqScore = Math.min(50, totalMcq);
-    attempt.codingScore = Math.min(100, totalCoding);
+    attempt.mcqScore = Math.min(100, totalMcq);
+    attempt.codingScore = Math.min(50, totalCoding);
     attempt.totalScore = attempt.mcqScore + attempt.codingScore;
     attempt.maxScore = 150;
     await attempt.save();

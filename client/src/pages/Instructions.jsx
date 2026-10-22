@@ -6,8 +6,8 @@ import { useAuth } from '../context/AuthContext';
 import { useExam } from '../context/ExamContext';
 
 const EVENT_RULES = [
-  'The event consists of 10 Java MCQs and 2 Java coding questions.',
-  'The maximum score is 150 points.',
+  'The event consists of 20 Java MCQs and 2 Java coding questions.',
+  'The maximum score is 150 points (Section A: 100 points, Section B: 50 points).',
   'The event duration is 40 minutes, with a visible countdown timer.',
   'Participants must enter their correct name, email address, and student ID.',
   'Each participant is allowed only one official attempt.',
@@ -104,11 +104,11 @@ const Instructions = () => {
                   <h3 className="text-sm font-bold text-white">Section A &mdash; Java MCQs</h3>
                 </div>
                 <span className="px-2.5 py-0.5 bg-indigo-950 text-indigo-300 font-extrabold text-xs rounded border border-indigo-800/50">
-                  50 Points
+                  100 Points
                 </span>
               </div>
               <p className="text-xs text-slate-400 leading-relaxed">
-                <strong>10 Questions &times; 5 Points = 50 Points.</strong> Output prediction snippet questions covering types, operators, OOP, strings, and exceptions.
+                <strong>20 Questions &times; 5 Points = 100 Points.</strong> Output prediction snippet questions covering types, operators, OOP, strings, collections, and exceptions.
               </p>
             </div>
 
@@ -121,11 +121,11 @@ const Instructions = () => {
                   <h3 className="text-sm font-bold text-white">Section B &mdash; Java Coding</h3>
                 </div>
                 <span className="px-2.5 py-0.5 bg-emerald-950 text-emerald-300 font-extrabold text-xs rounded border border-emerald-800/50">
-                  100 Points
+                  50 Points
                 </span>
               </div>
               <p className="text-xs text-slate-400 leading-relaxed">
-                <strong>2 Questions &times; 50 Points = 100 Points.</strong> Write and submit code in Monaco Java Editor. Evaluated on public & hidden test cases with partial marking.
+                <strong>2 Questions &times; 25 Points = 50 Points.</strong> Write and submit code in Monaco Java Editor. Evaluated on public & hidden test cases with partial marking.
               </p>
             </div>
           </div>

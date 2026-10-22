@@ -106,7 +106,7 @@ const Leaderboard = () => {
                   {top3[1].score} <span className="text-sm font-semibold text-slate-400">/ 150</span>
                 </div>
                 <div className="text-[10px] text-slate-400 mt-0.5 font-mono">
-                  MCQ: {top3[1].mcqScore || 0}/50 &bull; Code: {top3[1].codingScore || 0}/100
+                  MCQ: {top3[1].mcqScore || 0}/100 &bull; Code: {top3[1].codingScore || 0}/50
                 </div>
                 <div className="text-xs text-slate-400 mt-2 flex items-center gap-1 font-mono">
                   <Clock className="w-3 h-3 text-slate-500" />
@@ -131,7 +131,7 @@ const Leaderboard = () => {
                   {top3[0].score} <span className="text-sm font-semibold text-slate-400">/ 150</span>
                 </div>
                 <div className="text-[11px] text-amber-200/80 mt-0.5 font-mono">
-                  MCQ: {top3[0].mcqScore || 0}/50 &bull; Code: {top3[0].codingScore || 0}/100
+                  MCQ: {top3[0].mcqScore || 0}/100 &bull; Code: {top3[0].codingScore || 0}/50
                 </div>
                 <div className="text-xs text-slate-300 mt-2 flex items-center gap-1 font-mono font-semibold">
                   <Clock className="w-3.5 h-3.5 text-amber-400" />
@@ -156,7 +156,7 @@ const Leaderboard = () => {
                   {top3[2].score} <span className="text-sm font-semibold text-slate-400">/ 150</span>
                 </div>
                 <div className="text-[10px] text-slate-400 mt-0.5 font-mono">
-                  MCQ: {top3[2].mcqScore || 0}/50 &bull; Code: {top3[2].codingScore || 0}/100
+                  MCQ: {top3[2].mcqScore || 0}/100 &bull; Code: {top3[2].codingScore || 0}/50
                 </div>
                 <div className="text-xs text-slate-400 mt-2 flex items-center gap-1 font-mono">
                   <Clock className="w-3 h-3 text-slate-500" />
@@ -207,8 +207,8 @@ const Leaderboard = () => {
                   <th className="px-5 py-3 text-center w-16">Rank</th>
                   <th className="px-5 py-3">Candidate Name</th>
                   <th className="px-5 py-3">Student ID</th>
-                  <th className="px-5 py-3 text-right">MCQs (/50)</th>
-                  <th className="px-5 py-3 text-right">Coding (/100)</th>
+                  <th className="px-5 py-3 text-right">MCQs (/100)</th>
+                  <th className="px-5 py-3 text-right">Coding (/50)</th>
                   <th className="px-5 py-3 text-right">Total (/150)</th>
                   <th className="px-5 py-3 text-right">Time</th>
                   <th className="px-5 py-3 text-right">Submitted At</th>

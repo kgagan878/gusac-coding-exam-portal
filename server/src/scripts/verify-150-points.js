@@ -16,16 +16,25 @@ async function runVerification() {
   // 1. Verify Questions & Scoring
   const questions = await Question.find({}).sort({ order: 1 });
   console.log(`[Check 1] Total Questions in DB: ${questions.length}`);
-  if (questions.length !== 12) {
-    console.error('❌ Expected exactly 12 questions, found ' + questions.length);
+  if (questions.length !== 22) {
+    console.error(`❌ Expected exactly 22 questions, found ${questions.length}`);
     passedAll = false;
   } else {
-    console.log('✅ Exactly 12 questions present.');
+    console.log('✅ Exactly 22 questions present.');
   }
 
   const secA = questions.filter(q => q.section === 'A');
   const secB = questions.filter(q => q.section === 'B');
   console.log(`[Check 2] Section A questions: ${secA.length}, Section B questions: ${secB.length}`);
+
+  if (secA.length !== 20) {
+    console.error(`❌ Expected 20 Section A MCQs, found ${secA.length}`);
+    passedAll = false;
+  }
+  if (secB.length !== 2) {
+    console.error(`❌ Expected 2 Section B Coding problems, found ${secB.length}`);
+    passedAll = false;
+  }
 
   let secAPoints = 0;
   secA.forEach((q, i) => {
@@ -39,15 +48,15 @@ async function runVerification() {
   let secBPoints = 0;
   secB.forEach((q, i) => {
     secBPoints += q.marks;
-    if (q.marks !== 50) {
-      console.error(`❌ Section B Q${i + 1} has ${q.marks} marks instead of 50`);
+    if (q.marks !== 25) {
+      console.error(`❌ Section B Q${i + 1} has ${q.marks} marks instead of 25`);
       passedAll = false;
     }
   });
 
   const totalPoints = secAPoints + secBPoints;
-  console.log(`[Check 3] Section A Points: ${secAPoints} / 50`);
-  console.log(`[Check 4] Section B Points: ${secBPoints} / 100`);
+  console.log(`[Check 3] Section A Points: ${secAPoints} / 100 (20 MCQs x 5 pts)`);
+  console.log(`[Check 4] Section B Points: ${secBPoints} / 50 (2 Coding x 25 pts)`);
   console.log(`[Check 5] Grand Total Points: ${totalPoints} / 150`);
 
   if (totalPoints !== 150) {
@@ -65,12 +74,16 @@ async function runVerification() {
       console.error(`❌ Attempt #${idx + 1} maxScore is ${att.maxScore}, expected 150`);
       passedAll = false;
     }
-    if (att.mcqScore > 50 || att.codingScore > 100) {
-      console.error(`❌ Attempt #${idx + 1} scores out of bounds: MCQ=${att.mcqScore}, Coding=${att.codingScore}`);
+    if (att.mcqScore > 100 || att.codingScore > 50) {
+      console.error(`❌ Attempt #${idx + 1} scores out of bounds: MCQ=${att.mcqScore}/100, Coding=${att.codingScore}/50`);
+      passedAll = false;
+    }
+    if (att.totalScore !== (att.mcqScore + att.codingScore)) {
+      console.error(`❌ Attempt #${idx + 1} totalScore (${att.totalScore}) != mcqScore (${att.mcqScore}) + codingScore (${att.codingScore})`);
       passedAll = false;
     }
   });
-  console.log('✅ All completed attempts verified with maxScore: 150, mcqScore <= 50, codingScore <= 100.');
+  console.log('✅ All completed attempts verified with maxScore: 150, mcqScore <= 100, codingScore <= 50.');
 
   // 3. Verify Admin Account
   const admin = await User.findOne({ email: 'admin@gusac.org', role: 'admin' });

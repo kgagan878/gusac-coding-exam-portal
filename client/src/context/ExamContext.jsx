@@ -171,7 +171,7 @@ export const ExamProvider = ({ children }) => {
               score: ans.score,
               passedTests: ans.passedTests,
               totalTests: ans.totalTests,
-              maxMarks: 50,
+              maxMarks: 25,
               status: ans.passedTests === ans.totalTests ? 'Accepted' : 'Partial',
             };
           }
@@ -224,7 +224,7 @@ export const ExamProvider = ({ children }) => {
               score: ans.score,
               passedTests: ans.passedTests,
               totalTests: ans.totalTests,
-              maxMarks: 50,
+              maxMarks: 25,
               status: ans.passedTests === ans.totalTests ? 'Accepted' : 'Partial',
             };
           }

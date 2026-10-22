@@ -6,9 +6,6 @@ const Question = require('../models/Question');
 const ExamAttempt = require('../models/ExamAttempt');
 const Submission = require('../models/Submission');
 const Setting = require('../models/Setting');
-const jwt = require('jsonwebtoken');
-
-const JWT_SECRET = process.env.JWT_SECRET || 'gusac_coding_exam_super_secret_jwt_key_2025';
 
 async function runVerification() {
   console.log('=====================================================');
@@ -28,25 +25,25 @@ async function runVerification() {
     console.log(`   - Section A (MCQs): ${secA.length} questions`);
     console.log(`   - Section B (Coding): ${secB.length} questions`);
 
-    if (secA.length !== 10) {
-      throw new Error(`Expected 10 Section A MCQs, found ${secA.length}`);
+    if (secA.length !== 20) {
+      throw new Error(`Expected 20 Section A MCQs, found ${secA.length}`);
     }
     if (secB.length !== 2) {
       throw new Error(`Expected 2 Section B Coding problems, found ${secB.length}`);
     }
 
     const secAPoints = secA.reduce((sum, q) => sum + (q.marks || 5), 0);
-    const secBPoints = secB.reduce((sum, q) => sum + (q.marks || 50), 0);
+    const secBPoints = secB.reduce((sum, q) => sum + (q.marks || 25), 0);
     const totalPoints = secAPoints + secBPoints;
 
-    console.log(`   - Section A Marks: ${secAPoints} points (10 × 5)`);
-    console.log(`   - Section B Marks: ${secBPoints} points (2 × 50)`);
+    console.log(`   - Section A Marks: ${secAPoints} points (20 × 5)`);
+    console.log(`   - Section B Marks: ${secBPoints} points (2 × 25)`);
     console.log(`   - Grand Total Marks: ${totalPoints} points`);
 
     if (totalPoints !== 150) {
       throw new Error(`Grand total points must be 150, got ${totalPoints}`);
     }
-    console.log('   ✅ 150 Total Points Question Bank Verified!');
+    console.log('   ✅ 150 Total Points Question Bank Verified (22 Questions)!');
 
     // 2. Create / Login Test Student
     console.log('\n2. Candidate Login & Session Creation');
@@ -84,15 +81,15 @@ async function runVerification() {
     console.log(`   - Duration: ${attempt.duration} mins (40:00 limit)`);
     console.log(`   - Initial Max Score: ${attempt.maxScore}`);
 
-    // 4. Answer Section A MCQs (Simulate answering 8 out of 10 correctly)
-    console.log('\n4. Evaluating Section A MCQs (8 correct × 5 pts = 40 pts)');
+    // 4. Answer Section A MCQs (Simulate answering 16 out of 20 correctly = 80 pts)
+    console.log('\n4. Evaluating Section A MCQs (16 correct × 5 pts = 80 pts)');
     let simulatedCorrect = 0;
     let simulatedIncorrect = 0;
 
     for (let i = 0; i < secA.length; i++) {
       const q = secA[i];
-      // First 8 correct, last 2 wrong
-      const selected = i < 8 ? q.correctOption : (q.correctOption === 'A' ? 'B' : 'A');
+      // First 16 correct, last 4 wrong
+      const selected = i < 16 ? q.correctOption : (q.correctOption === 'A' ? 'B' : 'A');
       const isCorrect = selected === q.correctOption;
       if (isCorrect) simulatedCorrect++;
       else simulatedIncorrect++;
@@ -105,45 +102,45 @@ async function runVerification() {
       });
     }
 
-    // 5. Evaluate Section B Coding Questions
-    console.log('\n5. Evaluating Section B Java Coding Problems (2 Questions)');
-    // Question 1: Perfect solution (5/5 tests passed -> 50 pts)
+    // 5. Evaluate Section B Coding Questions (2 Questions, 25 pts each)
+    console.log('\n5. Evaluating Section B Java Coding Problems (2 Questions, 25 pts each)');
+    // Question 1: Perfect solution (5/5 tests passed -> 25 pts)
     const codingQ1 = secB[0];
     const q1PassedTests = 5;
     const q1TotalTests = 5;
-    const q1Score = Math.round((q1PassedTests / q1TotalTests) * 50);
+    const q1Score = Math.round((q1PassedTests / q1TotalTests) * 25);
 
     attempt.answers.push({
       questionId: codingQ1._id,
-      code: `import java.util.*;\npublic class Solution {\n    public static int[] twoSum(int[] nums, int target) {\n        Map<Integer, Integer> map = new HashMap<>();\n        for (int i = 0; i < nums.length; i++) {\n            int complement = target - nums[i];\n            if (map.containsKey(complement)) return new int[] { map.get(complement), i };\n            map.put(nums[i], i);\n        }\n        return new int[] {};\n    }\n}`,
+      code: `import java.util.*;\npublic class Solution {\n    // Perfect Solution\n}`,
       language: 'java',
       passedTests: q1PassedTests,
       totalTests: q1TotalTests,
       score: q1Score,
     });
-    console.log(`   - Problem 1 (${codingQ1.title}): ${q1PassedTests}/${q1TotalTests} tests passed -> ${q1Score}/50 pts`);
+    console.log(`   - Problem 1 (${codingQ1.title}): ${q1PassedTests}/${q1TotalTests} tests passed -> ${q1Score}/25 pts`);
 
-    // Question 2: Partial solution (4/5 tests passed -> 40 pts)
+    // Question 2: Partial solution (4/5 tests passed -> 20 pts)
     const codingQ2 = secB[1];
     const q2PassedTests = 4;
     const q2TotalTests = 5;
-    const q2Score = Math.round((q2PassedTests / q2TotalTests) * 50);
+    const q2Score = Math.round((q2PassedTests / q2TotalTests) * 25);
 
     attempt.answers.push({
       questionId: codingQ2._id,
-      code: `public class Solution {\n    public static boolean isValid(String s) {\n        // Partial implementation\n        return true;\n    }\n}`,
+      code: `public class Solution {\n    // Partial Solution\n}`,
       language: 'java',
       passedTests: q2PassedTests,
       totalTests: q2TotalTests,
       score: q2Score,
     });
-    console.log(`   - Problem 2 (${codingQ2.title}): ${q2PassedTests}/${q2TotalTests} tests passed -> ${q2Score}/50 pts`);
+    console.log(`   - Problem 2 (${codingQ2.title}): ${q2PassedTests}/${q2TotalTests} tests passed -> ${q2Score}/25 pts`);
 
     // 6. Finalize Attempt
     console.log('\n6. Finalizing Event Submission & Scoring Out of 150');
-    const mcqScore = simulatedCorrect * 5; // 8 * 5 = 40
-    const codingScore = q1Score + q2Score; // 50 + 40 = 90
-    const totalScore = mcqScore + codingScore; // 40 + 90 = 130
+    const mcqScore = simulatedCorrect * 5; // 16 * 5 = 80
+    const codingScore = q1Score + q2Score; // 25 + 20 = 45
+    const totalScore = mcqScore + codingScore; // 80 + 45 = 125
 
     attempt.mcqScore = mcqScore;
     attempt.codingScore = codingScore;
@@ -156,13 +153,13 @@ async function runVerification() {
     attempt.timeTaken = '18:24';
     await attempt.save();
 
-    console.log(`   - Section A Score: ${attempt.mcqScore} / 50 Pts`);
-    console.log(`   - Section B Score: ${attempt.codingScore} / 100 Pts`);
+    console.log(`   - Section A Score: ${attempt.mcqScore} / 100 Pts`);
+    console.log(`   - Section B Score: ${attempt.codingScore} / 50 Pts`);
     console.log(`   - Grand Total Score: ${attempt.totalScore} / 150 Pts`);
     console.log(`   - Time Taken: ${attempt.timeTaken}`);
 
-    if (attempt.totalScore !== 130) {
-      throw new Error(`Expected total score 130, got ${attempt.totalScore}`);
+    if (attempt.totalScore !== 125) {
+      throw new Error(`Expected total score 125, got ${attempt.totalScore}`);
     }
     console.log('   ✅ Candidate attempt finalized accurately out of 150 points!');
 
@@ -186,7 +183,7 @@ async function runVerification() {
 
     console.log(`   Top 3 on Leaderboard:`);
     ranked.slice(0, 3).forEach((r, idx) => {
-      console.log(`   ${idx + 1}. ${r.name} - ${r.score} / ${r.maxScore} (MCQ: ${r.mcqScore}/50, Code: ${r.codingScore}/100, Time: ${r.time})`);
+      console.log(`   ${idx + 1}. ${r.name} - ${r.score} / ${r.maxScore} (MCQ: ${r.mcqScore}/100, Code: ${r.codingScore}/50, Time: ${r.time})`);
     });
 
     console.log('   ✅ Leaderboard ranks out of 150 points confirmed!');

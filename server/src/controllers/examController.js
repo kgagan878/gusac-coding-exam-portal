@@ -209,7 +209,7 @@ const finalizeAttempt = async (attempt, endTime, res = null) => {
     const q = qMap.get(ans.questionId.toString());
     if (q) {
       if (q.section === 'A') {
-        // Section A: MCQs (5 points each, max 50)
+        // Section A: MCQs (5 points each, 20 questions = max 100)
         if (ans.selectedOption && ans.selectedOption.trim() === q.correctOption.trim()) {
           ans.isCorrect = true;
           ans.score = 5;
@@ -224,8 +224,8 @@ const finalizeAttempt = async (attempt, endTime, res = null) => {
           ans.score = 0;
         }
       } else {
-        // Section B: Coding questions (max 50 points each)
-        const qScore = typeof ans.score === 'number' ? Math.min(50, Math.max(0, ans.score)) : 0;
+        // Section B: Coding questions (max 25 points each, 2 questions = max 50)
+        const qScore = typeof ans.score === 'number' ? Math.min(25, Math.max(0, ans.score)) : 0;
         ans.score = qScore;
         codingScore += qScore;
         if (ans.passedTests > 0 && ans.passedTests === ans.totalTests) {
@@ -237,12 +237,12 @@ const finalizeAttempt = async (attempt, endTime, res = null) => {
     }
   });
 
-  const totalQuestions = questions.length || 12;
-  const mcqQuestionsCount = questions.filter((q) => q.section === 'A').length || 10;
+  const totalQuestions = questions.length || 22;
+  const mcqQuestionsCount = questions.filter((q) => q.section === 'A').length || 20;
   const unanswered = Math.max(0, mcqQuestionsCount - (Math.floor(correct) + incorrect));
 
-  attempt.mcqScore = Math.min(50, mcqScore);
-  attempt.codingScore = Math.min(100, codingScore);
+  attempt.mcqScore = Math.min(100, mcqScore);
+  attempt.codingScore = Math.min(50, codingScore);
   attempt.totalScore = attempt.mcqScore + attempt.codingScore;
   attempt.maxScore = 150;
   attempt.correctCount = Math.floor(correct);

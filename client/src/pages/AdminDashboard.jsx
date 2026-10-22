@@ -63,7 +63,7 @@ const AdminDashboard = () => {
     title: '',
     topic: 'Java Output Prediction',
     difficulty: 'Medium',
-    marks: 1,
+    marks: 5,
     order: 1,
     description: 'What will be the output of the following Java program?',
     codeSnippet: `public class Main {\n    public static void main(String[] args) {\n        // Your Java code\n    }\n}`,
@@ -449,7 +449,7 @@ const AdminDashboard = () => {
                   </div>
                   <div className="flex justify-between">
                     <span className="text-slate-400">Total Questions:</span>
-                    <strong>{stats?.totalQuestions || 12} (10 MCQs + 2 Coding)</strong>
+                    <strong>{stats?.totalQuestions || 22} (20 MCQs + 2 Coding)</strong>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-slate-400">Duration:</span>
@@ -457,7 +457,7 @@ const AdminDashboard = () => {
                   </div>
                   <div className="flex justify-between">
                     <span className="text-slate-400">Grand Total:</span>
-                    <strong className="text-emerald-400">150 Points (Sec A: 50, Sec B: 100)</strong>
+                    <strong className="text-emerald-400">150 Points (Sec A: 100, Sec B: 50)</strong>
                   </div>
                 </div>
               </div>
@@ -563,8 +563,8 @@ const AdminDashboard = () => {
                       <th className="px-4 py-3">Candidate</th>
                       <th className="px-4 py-3">Student ID</th>
                       <th className="px-4 py-3">Status</th>
-                      <th className="px-4 py-3 text-right">Sec A (/50)</th>
-                      <th className="px-4 py-3 text-right">Sec B (/100)</th>
+                      <th className="px-4 py-3 text-right">Sec A (/100)</th>
+                      <th className="px-4 py-3 text-right">Sec B (/50)</th>
                       <th className="px-4 py-3 text-right">Total (/150)</th>
                       <th className="px-4 py-3 text-center">MCQ C / W</th>
                       <th className="px-4 py-3 text-right">Time Taken</th>
@@ -638,9 +638,9 @@ const AdminDashboard = () => {
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-xl font-bold text-white tracking-tight">Java Question Bank (12 Questions)</h2>
+                <h2 className="text-xl font-bold text-white tracking-tight">Java Question Bank (22 Questions)</h2>
                 <p className="text-xs text-slate-400">
-                  Section A: 10 Java MCQs (5 pts each) &bull; Section B: 2 Java Coding Problems (50 pts each).
+                  Section A: 20 Java MCQs (5 pts each) &bull; Section B: 2 Java Coding Problems (25 pts each).
                 </p>
               </div>
 
@@ -677,7 +677,7 @@ const AdminDashboard = () => {
                           {q.difficulty}
                         </span>
                         <span className="text-xs font-bold text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-800/40">
-                          +{q.marks || (q.section === 'B' ? 50 : 5)} Pts
+                          +{q.marks || (q.section === 'B' ? 25 : 5)} Pts
                         </span>
                         <span className={`text-[10px] font-extrabold px-2 py-0.5 rounded ${q.section === 'B' ? 'bg-purple-950 text-purple-300 border border-purple-800/50' : 'bg-indigo-950 text-indigo-300 border border-indigo-800/50'}`}>
                           {q.section === 'B' ? 'Section B (Coding)' : 'Section A (MCQ)'}

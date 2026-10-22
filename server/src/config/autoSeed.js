@@ -9,14 +9,14 @@ const autoSeedIfEmpty = async () => {
   try {
     const questionCount = await Question.countDocuments({});
 
-    // If already seeded with 12 questions (10 MCQs + 2 Coding), verify settings and return
-    if (questionCount === 12) {
+    // If already seeded with 22 questions (20 MCQs + 2 Coding), verify settings and return
+    if (questionCount === 22) {
       await Setting.getConfig();
-      console.log(`Database is already populated with 12 CODE VERSE with Java questions (150 Points).`);
+      console.log(`Database is already populated with 22 CODE VERSE with Java questions (150 Points).`);
       return;
     }
 
-    console.log(`🌱 Detected ${questionCount} questions. Re-seeding official 12-question CODE VERSE exam (150 Points)...`);
+    console.log(`🌱 Detected ${questionCount} questions. Re-seeding official 22-question CODE VERSE exam (150 Points)...`);
     await Question.deleteMany({});
 
     // 1. Ensure Setting exists
@@ -30,8 +30,9 @@ const autoSeedIfEmpty = async () => {
     // 2. Ensure Admin exists
     const adminExists = await User.findOne({ role: 'admin' });
     if (!adminExists) {
+      const adminPass = process.env.ADMIN_PASSWORD || 'admin123';
       const salt = await bcrypt.genSalt(10);
-      const hashedPassword = await bcrypt.hash('admin123', salt);
+      const hashedPassword = await bcrypt.hash(adminPass, salt);
       await User.create({
         name: 'GUSAC Administrator',
         email: 'admin@gusac.org',
@@ -39,22 +40,22 @@ const autoSeedIfEmpty = async () => {
         role: 'admin',
         password: hashedPassword,
       });
-      console.log('✅ Auto-seed: Admin account created (admin@gusac.org)');
+      console.log('✅ Auto-seed: Admin account configured (admin@gusac.org)');
     }
 
-    // 3. Insert 12 Java Questions
+    // 3. Insert 22 Java Questions
     const createdQuestions = await Question.insertMany(javaQuestions);
-    console.log(`✅ Auto-seed: ${createdQuestions.length} Questions seeded (10 MCQs + 2 Coding).`);
+    console.log(`✅ Auto-seed: ${createdQuestions.length} Questions seeded (20 MCQs + 2 Coding).`);
 
     // 4. Create Sample Leaderboard if empty
     const attemptCount = await ExamAttempt.countDocuments({});
     if (attemptCount === 0) {
       const participants = [
-        { name: 'Rahul Sharma', email: 'rahul.s@gitam.in', studentId: 'GITAM202401', mcqScore: 50, codingScore: 90, totalScore: 140, timeTaken: '22:15', correct: 10, incorrect: 0, unanswered: 0 },
-        { name: 'Ananya Verma', email: 'ananya.v@gitam.in', studentId: 'GITAM202402', mcqScore: 45, codingScore: 80, totalScore: 125, timeTaken: '24:30', correct: 9, incorrect: 1, unanswered: 0 },
-        { name: 'Kiran Kumar', email: 'kiran.k@gitam.in', studentId: 'GITAM202403', mcqScore: 40, codingScore: 70, totalScore: 110, timeTaken: '27:45', correct: 8, incorrect: 2, unanswered: 0 },
-        { name: 'Siddharth Rao', email: 'siddharth.r@gitam.in', studentId: 'GITAM202404', mcqScore: 45, codingScore: 50, totalScore: 95, timeTaken: '31:20', correct: 9, incorrect: 1, unanswered: 0 },
-        { name: 'Pooja Reddy', email: 'pooja.r@gitam.in', studentId: 'GITAM202405', mcqScore: 35, codingScore: 40, totalScore: 75, timeTaken: '34:10', correct: 7, incorrect: 3, unanswered: 0 },
+        { name: 'Rahul Sharma', email: 'rahul.s@gitam.in', studentId: 'GITAM202401', mcqScore: 90, codingScore: 45, totalScore: 135, timeTaken: '22:15', correct: 18, incorrect: 2, unanswered: 0 },
+        { name: 'Ananya Verma', email: 'ananya.v@gitam.in', studentId: 'GITAM202402', mcqScore: 85, codingScore: 40, totalScore: 125, timeTaken: '24:30', correct: 17, incorrect: 3, unanswered: 0 },
+        { name: 'Kiran Kumar', email: 'kiran.k@gitam.in', studentId: 'GITAM202403', mcqScore: 80, codingScore: 35, totalScore: 115, timeTaken: '27:45', correct: 16, incorrect: 4, unanswered: 0 },
+        { name: 'Siddharth Rao', email: 'siddharth.r@gitam.in', studentId: 'GITAM202404', mcqScore: 70, codingScore: 25, totalScore: 95, timeTaken: '31:20', correct: 14, incorrect: 6, unanswered: 0 },
+        { name: 'Pooja Reddy', email: 'pooja.r@gitam.in', studentId: 'GITAM202405', mcqScore: 60, codingScore: 20, totalScore: 80, timeTaken: '34:10', correct: 12, incorrect: 8, unanswered: 0 },
       ];
 
       for (const p of participants) {
@@ -85,8 +86,8 @@ const autoSeedIfEmpty = async () => {
               submittedAt: endTime,
             };
           } else {
-            const qScore = idx === 10 ? Math.round(p.codingScore / 2) : (p.codingScore - Math.round(p.codingScore / 2));
-            const passedTests = Math.round((qScore / 50) * 5);
+            const qScore = idx === 20 ? Math.round(p.codingScore / 2) : (p.codingScore - Math.round(p.codingScore / 2));
+            const passedTests = Math.round((qScore / 25) * 5);
             return {
               questionId: q._id,
               code: q.starterCode?.java || '',

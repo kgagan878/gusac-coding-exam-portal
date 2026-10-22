@@ -26,10 +26,11 @@ const seedData = async () => {
       showExplanations: true,
     });
 
-    // 2. Create Admin Account
+    // 2. Create Admin Account (Securely using environment variable)
     console.log('🔑 Creating Admin Account...');
+    const adminPassword = process.env.ADMIN_PASSWORD || 'admin123';
     const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash('admin123', salt);
+    const hashedPassword = await bcrypt.hash(adminPassword, salt);
 
     const admin = await User.create({
       name: 'GUSAC Administrator',
@@ -38,12 +39,12 @@ const seedData = async () => {
       role: 'admin',
       password: hashedPassword,
     });
-    console.log(`✅ Admin created: ${admin.email} (Password: admin123)`);
+    console.log(`✅ Admin created: ${admin.email}`);
 
-    // 3. Seed Questions (10 MCQs + 2 Coding = 150 Points)
+    // 3. Seed Questions (20 MCQs x 5 pts + 2 Coding x 25 pts = 150 Points Total)
     console.log('📝 Seeding CODE VERSE with Java Question Bank (150 Points Total)...');
     const createdQuestions = await Question.insertMany(javaQuestions);
-    console.log(`✅ ${createdQuestions.length} Questions seeded successfully (10 MCQs + 2 Coding).`);
+    console.log(`✅ ${createdQuestions.length} Questions seeded successfully (20 MCQs + 2 Coding).`);
 
     // 4. Create Sample Participants for Initial Leaderboard (out of 150)
     console.log('🏆 Seeding Sample Leaderboard Participants...');
@@ -52,11 +53,11 @@ const seedData = async () => {
         name: 'Rahul Sharma',
         email: 'rahul.s@gitam.in',
         studentId: 'GITAM202401',
-        mcqScore: 50,
-        codingScore: 90,
-        totalScore: 140,
-        correctCount: 10,
-        incorrectCount: 0,
+        mcqScore: 90,
+        codingScore: 45,
+        totalScore: 135,
+        correctCount: 18,
+        incorrectCount: 2,
         unansweredCount: 0,
         timeTaken: '22:15',
       },
@@ -64,11 +65,11 @@ const seedData = async () => {
         name: 'Ananya Verma',
         email: 'ananya.v@gitam.in',
         studentId: 'GITAM202402',
-        mcqScore: 45,
-        codingScore: 80,
+        mcqScore: 85,
+        codingScore: 40,
         totalScore: 125,
-        correctCount: 9,
-        incorrectCount: 1,
+        correctCount: 17,
+        incorrectCount: 3,
         unansweredCount: 0,
         timeTaken: '24:30',
       },
@@ -76,11 +77,11 @@ const seedData = async () => {
         name: 'Kiran Kumar',
         email: 'kiran.k@gitam.in',
         studentId: 'GITAM202403',
-        mcqScore: 40,
-        codingScore: 70,
-        totalScore: 110,
-        correctCount: 8,
-        incorrectCount: 2,
+        mcqScore: 80,
+        codingScore: 35,
+        totalScore: 115,
+        correctCount: 16,
+        incorrectCount: 4,
         unansweredCount: 0,
         timeTaken: '27:45',
       },
@@ -88,11 +89,11 @@ const seedData = async () => {
         name: 'Siddharth Rao',
         email: 'siddharth.r@gitam.in',
         studentId: 'GITAM202404',
-        mcqScore: 45,
-        codingScore: 50,
+        mcqScore: 70,
+        codingScore: 25,
         totalScore: 95,
-        correctCount: 9,
-        incorrectCount: 1,
+        correctCount: 14,
+        incorrectCount: 6,
         unansweredCount: 0,
         timeTaken: '31:20',
       },
@@ -100,11 +101,11 @@ const seedData = async () => {
         name: 'Pooja Reddy',
         email: 'pooja.r@gitam.in',
         studentId: 'GITAM202405',
-        mcqScore: 35,
-        codingScore: 40,
-        totalScore: 75,
-        correctCount: 7,
-        incorrectCount: 3,
+        mcqScore: 60,
+        codingScore: 20,
+        totalScore: 80,
+        correctCount: 12,
+        incorrectCount: 8,
         unansweredCount: 0,
         timeTaken: '34:10',
       },
@@ -137,9 +138,9 @@ const seedData = async () => {
             submittedAt: endTime,
           };
         } else {
-          // Coding question
-          const qScore = idx === 10 ? Math.round(p.codingScore / 2) : (p.codingScore - Math.round(p.codingScore / 2));
-          const passedTests = Math.round((qScore / 50) * 5);
+          // Coding question (idx 20 and 21)
+          const qScore = idx === 20 ? Math.round(p.codingScore / 2) : (p.codingScore - Math.round(p.codingScore / 2));
+          const passedTests = Math.round((qScore / 25) * 5);
           return {
             questionId: q._id,
             code: q.starterCode?.java || '',
@@ -177,13 +178,11 @@ const seedData = async () => {
     console.log('======================================================');
     console.log('Event Configuration:');
     console.log('- Language: Java only');
-    console.log('- Section A: 10 MCQs x 5 pts = 50 pts');
-    console.log('- Section B: 2 Coding x 50 pts = 100 pts');
+    console.log('- Total Questions: 22 Questions');
+    console.log('- Section A: 20 MCQs x 5 pts = 100 pts');
+    console.log('- Section B: 2 Coding x 25 pts = 50 pts');
     console.log('- Grand Total: 150 Points');
     console.log('- Duration: 40 Minutes');
-    console.log('\nAdmin Credentials:');
-    console.log('Email: admin@gusac.org');
-    console.log('Password: admin123');
     console.log('======================================================\n');
 
     await disconnectDB();

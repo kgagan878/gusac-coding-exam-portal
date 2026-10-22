@@ -1,55 +1,69 @@
-# GUSAC Online Coding Exam Portal 🚀
+# CODE VERSE with Java — GUSAC Coding Exam Portal 🚀
 
 [![Tech Stack: MERN](https://img.shields.io/badge/Stack-React%20%7C%20Node%20%7C%20Express%20%7C%20MongoDB-blue.svg)](https://github.com)
-[![Language: Java](https://img.shields.io/badge/Exam%20Language-Java%20Only-orange.svg)](https://java.com)
+[![Language: Java](https://img.shields.io/badge/Exam%20Language-Java%20Only%20(SE%2017%2B)-orange.svg)](https://java.com)
 [![Duration: 40 Mins](https://img.shields.io/badge/Duration-40%20Minutes-green.svg)](#)
-[![Questions: 20 MCQs](https://img.shields.io/badge/Questions-20%20Java%20Snippets-purple.svg)](#)
+[![Questions: 22 Questions](https://img.shields.io/badge/Questions-22%20(20%20MCQs%20%2B%202%20Coding)-purple.svg)](#)
+[![Total Marks: 150 Points](https://img.shields.io/badge/Total%20Score-150%20Points-emerald.svg)](#)
 
-A full-stack, production-grade Online Coding Examination Portal engineered for the **GITAM University Science & Activity Club (GUSAC)**. The portal is specifically tailored for evaluating core **Java Programming, OOP concepts, Output Prediction, and Algorithmic Reasoning** through 20 curated snippet questions within a strict 40-minute window.
+A full-stack, production-grade Online Coding Examination Portal engineered for the **GITAM University Science & Activity Club (GUSAC)** flagship event **CODE VERSE with Java**. 
+
+The portal is designed for evaluating core **Java Programming, OOP Concepts, Output Prediction, and Algorithmic Problem Solving** across a strict 40-minute examination window.
+
+---
+
+## 📊 Exam Structure & Scoring Model (150 Points)
+
+| Section | Type | Questions | Marks per Question | Section Total | Evaluation Method |
+|---|---|---|---|---|---|
+| **Section A** | Java Output Prediction & Snippet MCQs | 20 Questions (Q1 – Q20) | **5 Points** | **100 Points** | Automated MCQ answer key verification |
+| **Section B** | Java Coding Challenges | 2 Questions (Q21 – Q22) | **25 Points** | **50 Points** | Monaco Editor + Judge0 API test-case grading (partial scoring supported) |
+| **Grand Total** | **Combined Evaluation** | **22 Questions** | — | **150 Points** | **Server-validated scoring** |
 
 ---
 
 ## 🌟 Key Features
 
-### 👨‍🎓 Student Experience
-- **Simple Onboarding**: Quick student sign-in with **Full Name**, **GITAM Email**, and **Roll Number / Student ID**.
-- **Official Instructions**: Detailed rules, 40-minute countdown guidelines, scoring schema (+1 mark per correct answer, no negative marking), and review system guidelines.
-- **20-Question Java Snippet Bank**:
-  - Multiple-choice format with code snippet cards.
+### 👨‍🎓 Candidate Experience
+- **Official Branding & GUSAC Logo**: Clean, modern dark-mode interface featuring the official GITAM University Science & Activity Club branding.
+- **Event Rules & Guidelines**: Mandatory 16-point Event Rules modal accessible before and during the exam, plus a dedicated `/rules` route.
+- **Section A — 20 Java Snippet MCQs (100 Pts)**:
   - Covers: Primitive types, type casting, String immutability, OOP (Inheritance, Polymorphism, Method Overloading/Overriding), Exception handling (`try-catch-finally`), Static initialization order, and Collections.
-- **Interactive Question Navigator**:
-  - Color-coded question grid (Answered = Green, Marked for Review = Amber, Unanswered = Slate).
-  - Clear response button and 1-click review toggling.
-  - Seamless Next / Previous / Grid-based jumping.
-- **Server-Synchronized Timer**:
-  - 40:00 countdown timer tied directly to backend timestamps to prevent client-side tampering.
-  - Automatically submits when the timer runs out.
+  - Interactive Question Navigator with color-coded status (Answered = Green, Marked for Review = Amber, Unanswered = Slate).
+- **Section B — 2 Java Coding Problems (50 Pts)**:
+  - Full-featured **Monaco Code Editor** with syntax highlighting, autocomplete, and theme support.
+  - Safe execution sandbox powered by the **Judge0 API** (Java OpenJDK 17+).
+  - Public test case runner with immediate stdout/stderr feedback and hidden test case submission grading.
+- **Server-Synchronized 40-Minute Countdown**:
+  - Timer calculated from server-side attempt timestamps to prevent client manipulation.
+  - Automatic submission when the 40-minute limit expires.
 - **Instant Result & Performance Analysis**:
-  - Final score displayed out of 20 with accuracy percentage and time taken.
-  - Full Question-by-Question breakdown accordion with syntax-highlighted code snippets, option selections, and deep explanations (controlled by admin toggle).
-  - Animated celebration confetti on completion.
+  - Score displayed out of 150 with Section A (/100) and Section B (/50) subscores.
+  - Question-by-question review with syntax-highlighted snippets, options, and step-by-step explanations (toggled by admin).
+  - Confetti celebration animation on completion.
 
 ### 🏆 Live Leaderboard
-- Real-time ranking calculated by:
-  1. **Primary**: Highest Total Score (`/20`)
-  2. **Secondary**: Lowest Time Taken (`MM:SS`)
-- Prominent Top 3 podium display (Gold 🥇, Silver 🥈, Bronze 🥉).
-- Masked student emails (`r***@gitam.in`) for student data privacy.
+- Real-time ranking based on:
+  1. **Primary**: Highest Total Score (`/150`)
+  2. **Secondary**: Lowest Completion Time (`MM:SS`)
+- Top 3 podium display (Gold 🥇, Silver 🥈, Bronze 🥉) with separate Section A and Section B score columns.
+- Student email masking (`r***@gitam.in`) for privacy compliance.
 
 ### 🛡️ Admin Dashboard (`/admin/login`)
 - **Real-Time Overview Metrics**: Total Candidates, Completed Exams, In-Progress attempts, Average Score.
-- **Live Participants Log**: Real-time progress, time elapsed, and current score status.
-- **Question Bank CRUD**: Add, edit, preview, and delete Java snippet questions, code blocks, option choices, and explanations.
-- **Configurable Exam Settings**: Toggle candidate answer explanation visibility and customize default exam duration.
-- **1-Click CSV Export**: Download complete student scorecards with Name, Email, Student ID, Score, Correct/Incorrect/Unanswered counts, and Time Taken.
+- **Candidate Management**: View live progress, section breakdown, time taken, and submission timestamps.
+- **Question Bank CRUD**: Add, edit, preview, and delete Java questions, options, test cases, and explanations.
+- **Configurable Exam Settings**: Toggle candidate solution explanation visibility and adjust exam duration.
+- **1-Click CSV Export**: Download complete student scorecards with Section A (/100), Section B (/50), Total (/150), and timing data.
 
 ---
 
 ## 🛠️ Tech Stack
 
-- **Frontend**: React 18, Vite, Tailwind CSS, Monaco Editor / Prism-style Code Views, Lucide Icons, Canvas Confetti, Axios.
-- **Backend**: Node.js, Express.js, Mongoose, JSON Web Tokens (JWT), Bcryptjs, Express Rate Limit.
-- **Database**: MongoDB (Atlas cloud connection or embedded zero-config in-memory fallback).
+- **Frontend**: React 18, Vite, Tailwind CSS, Monaco Editor (`@monaco-editor/react`), Lucide React, Canvas Confetti, Axios.
+- **Backend**: Node.js, Express.js, Mongoose, JSON Web Tokens (JWT), Bcryptjs, Express Rate Limit, Axios.
+- **Code Execution**: Judge0 API (Java 17 engine) with automated fallback execution engine.
+- **Database**: MongoDB (Atlas cloud connection or local/embedded MongoDB).
 
 ---
 
@@ -59,11 +73,12 @@ A full-stack, production-grade Online Coding Examination Portal engineered for t
 gusac-coding-exam/
 ├── client/                      # React + Vite Frontend
 │   ├── src/
-│   │   ├── components/          # Navbar, QuestionNavigator, CodeSnippetViewer, CountdownTimer
-│   │   ├── context/             # AuthContext, ExamContext (40-min timer, answer state)
-│   │   ├── pages/               # Login, Instructions, ExamPortal, Result, Leaderboard, AdminDashboard
+│   │   ├── assets/              # GUSAC official logo
+│   │   ├── components/          # Navbar, EventRulesModal, QuestionNavigator, CodeEditor, SubmitModal
+│   │   ├── context/             # AuthContext, ExamContext (40-min timer, answer sync)
+│   │   ├── pages/               # Login, Instructions, Rules, ExamPortal, Result, Leaderboard, AdminDashboard
 │   │   ├── services/            # Axios API client (auto JWT header attachment)
-│   │   ├── App.jsx              # Client routing & authentication guards
+│   │   ├── App.jsx              # Routes & role-based authentication guards
 │   │   └── main.jsx
 │   ├── .env.example
 │   ├── package.json
@@ -72,17 +87,17 @@ gusac-coding-exam/
 │   └── vercel.json              # SPA routing rewrite rule
 ├── server/                      # Express.js REST API
 │   ├── src/
-│   │   ├── config/              # MongoDB connection & 20 Java questions seed
-│   │   ├── controllers/         # Auth, Exam, Question, Result, Admin controllers
+│   │   ├── config/              # MongoDB connection & 22 Java questions bank (20 MCQs + 2 Coding)
+│   │   ├── controllers/         # Auth, Exam, Question, Submission, Result, Admin controllers
 │   │   ├── middleware/          # JWT auth guard, Admin guard, Rate limiter
-│   │   ├── models/              # User, Question, ExamAttempt, Setting
+│   │   ├── models/              # User, Question, ExamAttempt, Submission, Setting
 │   │   ├── routes/              # Modular Express API endpoints
-│   │   ├── scripts/             # Database seed script (seed.js)
+│   │   ├── scripts/             # Seed script, verify-150-points.js, verifyFullFlow.js
 │   │   └── index.js             # Server entry point
 │   ├── .env.example
 │   ├── package.json
 │   └── render.yaml              # Production Render deployment configuration
-├── .gitignore                   # Comprehensive gitignore (node_modules, env, dist, logs)
+├── .gitignore                   # Comprehensive gitignore (node_modules, .env, dist, logs, zip)
 ├── package.json                 # Workspace runner scripts
 └── README.md
 ```
@@ -94,7 +109,7 @@ gusac-coding-exam/
 ### 1. Prerequisites
 - [Node.js](https://nodejs.org/) (v18 or newer)
 - [npm](https://www.npmjs.com/) (v9 or newer)
-- [MongoDB Atlas](https://www.mongodb.com/atlas) (Recommended) or local MongoDB instance
+- [MongoDB Atlas](https://www.mongodb.com/atlas) or local MongoDB instance (port 27017)
 
 ---
 
@@ -111,19 +126,32 @@ npm install
 cp .env.example .env
 ```
 
-Edit `server/.env`:
+Configure `server/.env`:
 ```env
 PORT=5000
-MONGO_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/gusac_exam?retryWrites=true&w=majority
+MONGO_URI=mongodb://127.0.0.1:27017/gusac_exam
 JWT_SECRET=your_super_secure_jwt_secret_key_2026
 EXAM_DURATION_MINUTES=40
+JUDGE0_API_URL=https://ce.judge0.com
+JUDGE0_API_KEY=your_optional_judge0_api_key
+ADMIN_EMAIL=admin@gusac.org
+ADMIN_PASSWORD=your_secure_admin_password
 ```
 
-> **Note on MongoDB**: If `MONGO_URI` is left blank, the server attempts to launch an embedded in-memory MongoDB instance for quick local development. For production or systems with limited temporary disk space, provide a MongoDB Atlas connection string.
+> **Security Note**: Never commit `.env` to version control. The root `.gitignore` excludes all `.env` files automatically.
 
-Seed the 20 Java questions, default exam settings, admin credentials, and sample leaderboard:
+Seed the database with all 22 questions, default settings, and admin user:
 ```bash
 npm run seed
+```
+
+Run automated verification:
+```bash
+# Verify 22 questions, 150 points schema (20 MCQs @ 5 = 100, 2 Coding @ 25 = 50)
+node src/scripts/verify-150-points.js
+
+# Verify full student flow simulation
+node src/scripts/verifyFullFlow.js
 ```
 
 Start the backend:
@@ -137,7 +165,7 @@ npm start
 
 ### 3. Frontend Setup
 
-In a separate terminal window:
+In a separate terminal:
 ```bash
 # Navigate to client directory
 cd client
@@ -160,18 +188,23 @@ npm run dev
 # Frontend runs on http://localhost:3000
 ```
 
+To build for production:
+```bash
+npm run build
+```
+
 ---
 
 ## 🔑 Default Credentials
 
 ### Administrator Portal
 - **Login URL**: `http://localhost:3000/admin/login`
-- **Email**: `admin@gusac.org`
-- **Password**: `admin123`
+- **Email**: Configured via `ADMIN_EMAIL` (default: `admin@gusac.org`)
+- **Password**: Configured via `ADMIN_PASSWORD` in `.env` (seeded default: `admin123`)
 
-### Candidate Flow
+### Student Flow
 - **Candidate URL**: `http://localhost:3000/exam`
-- **Registration**: Enter Name, Email, and Student ID (e.g. `Rahul Sharma`, `rahul.s@gitam.in`, `GITAM202401`).
+- **Registration**: Enter Name, GITAM Email, and Student ID (e.g., `Rahul Sharma`, `rahul.s@gitam.in`, `GITAM202401`).
 
 ---
 
@@ -179,16 +212,18 @@ npm run dev
 
 | Method | Endpoint | Description |
 |---|---|---|
-| `POST` | `/api/auth/login` | Student login & token issue |
+| `POST` | `/api/auth/login` | Student login & token issuance |
 | `POST` | `/api/admin/login` | Admin authentication |
 | `GET` | `/api/auth/me` | Fetch authenticated user profile |
 | `POST` | `/api/exams/start` | Start 40-minute exam attempt |
 | `GET` | `/api/exams/status` | Synchronize server time left & answers |
-| `POST` | `/api/exams/save-answer`| Background auto-save response |
+| `POST` | `/api/exams/save-answer` | Background auto-save response |
 | `POST` | `/api/exams/submit` | Finalize exam & grade answers |
-| `GET` | `/api/questions` | Fetch 20 Java exam questions (without answers) |
-| `GET` | `/api/results/:userId` | Get score `/20` and question breakdown |
-| `GET` | `/api/leaderboard` | Get ranked leaderboard |
+| `POST` | `/api/submissions/run` | Execute code against public test cases (Judge0) |
+| `POST` | `/api/submissions/submit` | Submit code against all test cases for grading |
+| `GET` | `/api/questions` | Fetch 22 questions (answers & hidden tests stripped) |
+| `GET` | `/api/results/:userId` | Get score out of 150 and question breakdown |
+| `GET` | `/api/leaderboard` | Get ranked leaderboard (/150) |
 | `GET` | `/api/admin/dashboard` | Dashboard overview statistics |
 | `GET` | `/api/admin/export-csv` | Download complete results as CSV |
 | `GET/PUT` | `/api/admin/settings` | Get/Update duration & explanation visibility |
@@ -208,13 +243,11 @@ Follow these steps to connect and push this repository to your GitHub repository
 5. **Do NOT** initialize with a README, .gitignore, or license (they are already included locally).
 6. Click **Create repository**.
 
-### Step 2: Initialize Git and Commit
+### Step 2: Review Staged Files & Commit
 ```bash
 # In the project root (gusac-coding-exam):
-git init
-git branch -M main
 git add .
-git commit -m "feat: complete GUSAC 20-question Java coding exam portal MVP"
+git commit -m "feat: complete CODE VERSE with Java portal (22 questions, 150 points, Judge0 integration)"
 ```
 
 ### Step 3: Link Remote and Push
@@ -231,7 +264,7 @@ git push -u origin main
 ## 🌐 Production Deployment Guide
 
 ### Deploy Frontend to Vercel
-1. Import repository to Vercel.
+1. Import repository into Vercel.
 2. Select Root Directory: `client`.
 3. Framework Preset: **Vite**.
 4. Set Environment Variable: `VITE_API_URL = https://your-backend-api.onrender.com/api`
@@ -247,6 +280,10 @@ git push -u origin main
    - `MONGO_URI`: `mongodb+srv://...` (your MongoDB Atlas connection string)
    - `JWT_SECRET`: A long random secret string
    - `EXAM_DURATION_MINUTES`: `40`
+   - `ADMIN_EMAIL`: `admin@gusac.org`
+   - `ADMIN_PASSWORD`: Your strong admin password
+   - `JUDGE0_API_URL`: `https://ce.judge0.com`
+   - `JUDGE0_API_KEY`: Your Judge0 API key (if applicable)
 6. Deploy.
 
 ---

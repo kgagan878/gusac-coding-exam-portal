@@ -4,8 +4,8 @@ import { Shield, Clock, Award, BookOpen, ArrowRight, ArrowLeft, CheckCircle2, Al
 import Navbar from '../components/Navbar';
 
 const EVENT_RULES = [
-  'The event consists of 10 Java MCQs and 2 Java coding questions.',
-  'The maximum score is 150 points.',
+  'The event consists of 20 Java MCQs and 2 Java coding questions.',
+  'The maximum score is 150 points (Section A: 100 points, Section B: 50 points).',
   'The event duration is 40 minutes, with a visible countdown timer.',
   'Participants must enter their correct name, email address, and student ID.',
   'Each participant is allowed only one official attempt.',

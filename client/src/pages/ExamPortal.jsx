@@ -65,7 +65,7 @@ const ExamPortal = () => {
 
   if (!studentUser) return null;
 
-  const totalQuestions = questions.length || 12;
+  const totalQuestions = questions.length || 22;
 
   // Split questions into Section A (MCQs) and Section B (Coding)
   const sectionAQuestions = questions.filter((q) => q.section === 'A' || q.type === 'mcq');
@@ -131,7 +131,7 @@ const ExamPortal = () => {
           </div>
 
           <div className="my-3 space-y-4 flex-1 overflow-y-auto pr-1">
-            {/* Section A: Java MCQs (10 Questions • 50 Points) */}
+            {/* Section A: Java MCQs (20 Questions • 100 Points) */}
             <div>
               <div className="flex items-center justify-between mb-2">
                 <span className="text-[11px] font-extrabold uppercase tracking-wider text-indigo-300 flex items-center gap-1.5">
@@ -139,13 +139,13 @@ const ExamPortal = () => {
                   Section A: Java MCQs
                 </span>
                 <span className="text-[10px] font-mono text-slate-400 bg-slate-800/80 px-2 py-0.5 rounded border border-slate-700/60">
-                  50 Pts (10 × 5)
+                  100 Pts (20 × 5)
                 </span>
               </div>
 
               {loadingQuestions ? (
                 <div className="grid grid-cols-5 gap-1.5">
-                  {Array.from({ length: 10 }).map((_, i) => (
+                  {Array.from({ length: 20 }).map((_, i) => (
                     <div key={i} className="h-9 bg-slate-800/60 rounded-xl animate-pulse" />
                   ))}
                 </div>
@@ -190,7 +190,7 @@ const ExamPortal = () => {
               )}
             </div>
 
-            {/* Section B: Java Coding (2 Problems • 100 Points) */}
+            {/* Section B: Java Coding (2 Problems • 50 Points) */}
             <div className="pt-2 border-t border-slate-800/80">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-[11px] font-extrabold uppercase tracking-wider text-purple-300 flex items-center gap-1.5">
@@ -198,7 +198,7 @@ const ExamPortal = () => {
                   Section B: Java Coding
                 </span>
                 <span className="text-[10px] font-mono text-emerald-300 bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-700/60">
-                  100 Pts (2 × 50)
+                  50 Pts (2 × 25)
                 </span>
               </div>
 
@@ -235,13 +235,13 @@ const ExamPortal = () => {
                         key={q._id}
                         onClick={() => setCurrentIdx(idx)}
                         className={`h-11 rounded-xl text-xs font-bold border transition-all flex items-center justify-between px-3 relative cursor-pointer ${btnStyle}`}
-                        title={`Q${idx + 1} (50 pts): ${isSubmitted ? `Submitted (${subInfo.score}/50 pts)` : hasCode ? 'Drafted' : 'Unattempted'}`}
+                        title={`Q${idx + 1} (25 pts): ${isSubmitted ? `Submitted (${subInfo.score}/25 pts)` : hasCode ? 'Drafted' : 'Unattempted'}`}
                       >
                         <div className="flex items-center gap-1.5">
                           <Code2 className="w-3.5 h-3.5" />
                           <span>Q{idx + 1}</span>
                         </div>
-                        <span className="text-[10px] font-mono opacity-80">50 pts</span>
+                        <span className="text-[10px] font-mono opacity-80">25 pts</span>
                         {isMarked && (
                           <span className="w-1.5 h-1.5 rounded-full bg-amber-300 absolute top-1 right-1" />
                         )}
@@ -329,7 +329,7 @@ const ExamPortal = () => {
                         : 'text-emerald-400 bg-emerald-950/60 border-emerald-800/50'
                     }`}
                   >
-                    +{currentQuestion.marks || (isCurrentCoding ? 50 : 5)} Points
+                    +{currentQuestion.marks || (isCurrentCoding ? 25 : 5)} Points
                   </span>
                 </div>
               </div>
@@ -439,7 +439,7 @@ const ExamPortal = () => {
                           <span className="text-emerald-200 font-semibold">Latest Evaluation:</span>
                         </div>
                         <div className="font-mono font-bold text-emerald-400">
-                          {currentSubmission.score} / {currentSubmission.maxMarks || 50} Pts ({currentSubmission.passedTests}/{currentSubmission.totalTests} Tests Passed)
+                          {currentSubmission.score} / {currentSubmission.maxMarks || 25} Pts ({currentSubmission.passedTests}/{currentSubmission.totalTests} Tests Passed)
                         </div>
                       </div>
                     )}

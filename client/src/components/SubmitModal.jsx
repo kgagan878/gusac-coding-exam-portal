@@ -15,7 +15,7 @@ const SubmitModal = ({ isOpen, onClose }) => {
 
   if (!isOpen) return null;
 
-  const totalQuestions = questions.length || 12;
+  const totalQuestions = questions.length || 22;
 
   // Count answered across both Section A (MCQs) and Section B (Coding)
   const answeredCount = questions.reduce((count, q) => {
@@ -57,7 +57,7 @@ const SubmitModal = ({ isOpen, onClose }) => {
         {/* Content */}
         <div className="p-6 space-y-4">
           <p className="text-xs text-slate-300 leading-relaxed">
-            Are you sure you want to finalize your event submission? Once submitted, your MCQ answers and Java code solutions will be locked, your score will be calculated out of <strong>150 points</strong> (Section A: 50 pts, Section B: 100 pts), and your completion time will be officially recorded on the leaderboard.
+            Are you sure you want to finalize your event submission? Once submitted, your MCQ answers and Java code solutions will be locked, your score will be calculated out of <strong>150 points</strong> (Section A: 100 pts, Section B: 50 pts), and your completion time will be officially recorded on the leaderboard.
           </p>
 
           {/* Answered / Review / Unanswered Stats Grid */}
